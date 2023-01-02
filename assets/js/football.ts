@@ -63,7 +63,7 @@ const penalties = [
   new Penalty('Illegal Advancement (Co-Rec)', ['live'], ['offense'], [19], ['run']),
   new Penalty('Illegal Backward Pass', ['live'], ['offense'], [35, 9], ['run', 'change'], 5, ['spot'], true),
   new Penalty('Illegal Forward Pass', ['live'], ['offense'], [35, 9], ['run', 'change'], 5, ['spot'], true),
-  new Penalty('Intentional Grounding', ['live'], ['offense'], [36, 9], ['run'], 5, ['spot'], true),
+  new Penalty('Intentional Grounding', ['live'], ['offense'], [36, 9], ['loose'], 5, ['spot'], true),
   new Penalty('Illegal Reception (Co-Rec)', ['live'], ['offense'], [19, 9], ['run'], 5, ['previous'], true),
   new Penalty('Help the Runner', ['live'], ['offense'], [44], ['run', 'change'], 5, ['spot']),
   new Penalty('Unsportsmanlike Conduct', ['live', 'dead'], ['offense', 'defense'], [27], ['run', 'loose', 'change'], 10, ['succeeding']),
@@ -99,22 +99,29 @@ function getPlayType(penalty: Penalty): string {
       return 'Running Play';
     case 'loose':
       return 'Loose Ball';
-    case 'change':
-      return 'After Change of Team Possession';
     default:
-      return 'Unknown';
+      return 'After Change of Team Possession';
   }
 }
 
-function getResult(playType: string): string {
+function getResult(penalty: Penalty, playType: string): string {
+  // define results
+  let result: string;
+  // switch on play type
   switch (playType) {
     case 'Loose Ball':
-      return getRandom(looseResults);
+      result = getRandom(looseResults);
     case 'Running Play':
-      return getRandom(runningResults);
+      result = getRandom(runningResults);
     default:
-      return getRandom(changeResults);
+      result = getRandom(changeResults);
   }
+  // if penalty is intentional grounding, play must be incomplete
+  if (penalty.name.toLowerCase().includes('grounding')) {
+    result = 'Incomplete Pass';
+  }
+  // return a random result
+  return result;
 }
 
 function getRandomClockTime(): string {
