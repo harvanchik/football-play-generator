@@ -9,7 +9,7 @@ import rev from 'gulp-rev';
 import rewrite from 'gulp-rev-rewrite';
 
 const root = './'; // the path to the root of your project (you probably do not need to change this)
-const destination = `${root}dist`; // the destination folder of the gulped content (change as needed (i.e. 'docs'))
+const destination = `${root}docs`; // the destination folder of the gulped content (change as needed (i.e. 'docs'))
 const manifest = `${root}rev-manifest.json`; // the name of the manifest file (do not edit unless you know what you're doing)
 
 /**
@@ -17,11 +17,7 @@ const manifest = `${root}rev-manifest.json`; // the name of the manifest file (d
  */
 function html() {
   return gulp
-    .src([
-      `${root}**/*.html`,
-      `!${root}node_modules/**/*.html`,
-      `!${destination}/**/*.html`,
-    ])
+    .src([`${root}**/*.html`, `!${root}node_modules/**/*.html`, `!${destination}/**/*.html`])
     .pipe(
       htmlmin({
         collapseWhitespace: true,
@@ -80,17 +76,13 @@ function javascript() {
  */
 function images() {
   return gulp
-    .src([
-      `${root}assets/img/**/*.{png,jpg,jpeg,jfif,gif,webp,pdf,bmp,tif,tiff,raw,cr2,nef,sr2,heif,hdr,ppm,pgm,pbm,pnm,exif}`,
-    ])
+    .src([`${root}assets/img/**/*.{png,jpg,jpeg,jfif,gif,webp,pdf,bmp,tif,tiff,raw,cr2,nef,sr2,heif,hdr,ppm,pgm,pbm,pnm,exif}`])
     .pipe(
       image({
         quiet: true, // set to false to log results for every image processed
       })
     )
-    .pipe(rev())
     .pipe(gulp.dest(`${destination}/assets/img`))
-    .pipe(rev.manifest(manifest, { merge: true }))
     .pipe(gulp.dest(root));
 }
 
