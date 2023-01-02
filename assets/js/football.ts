@@ -47,6 +47,7 @@ const pats = ['1 PT', '2 PTS', '3 PTS'];
 // list results
 const looseResults = ['Completed Pass (1st Down)', 'Completed Pass (Short)', 'Incomplete Pass', 'Touchdown', 'Interception'];
 const runningResults = ['Deflagged (1st Down)', 'Deflagged (1st Down)', 'Deflagged (Short)', 'Deflagged (Short)', 'Touchdown', 'Touchdown', 'Safety'];
+const changeResults = ['Deflagged', 'Touchdown', 'Deflagged', 'Touchdown', 'Touchback', 'Safety'];
 // list of penalties
 const penalties = [
   new Penalty('Failure to Wear Required Equipment', ['live'], ['offense', 'defense'], [23]),
@@ -104,6 +105,17 @@ function getPlayType(penalty: Penalty): string {
       return 'After Change of Team Possession';
     default:
       return 'Unknown';
+  }
+}
+
+function getResult(playType: string): string {
+  switch (playType) {
+    case 'Loose Ball':
+      return getRandom(looseResults);
+    case 'Running Play':
+      return getRandom(runningResults);
+    default:
+      return getRandom(changeResults);
   }
 }
 

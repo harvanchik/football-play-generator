@@ -31,6 +31,7 @@ var pats = ['1 PT', '2 PTS', '3 PTS'];
 // list results
 var looseResults = ['Completed Pass (1st Down)', 'Completed Pass (Short)', 'Incomplete Pass', 'Touchdown', 'Interception'];
 var runningResults = ['Deflagged (1st Down)', 'Deflagged (1st Down)', 'Deflagged (Short)', 'Deflagged (Short)', 'Touchdown', 'Touchdown', 'Safety'];
+var changeResults = ['Deflagged', 'Touchdown', 'Deflagged', 'Touchdown', 'Touchback', 'Safety'];
 // list of penalties
 var penalties = [
     new Penalty('Failure to Wear Required Equipment', ['live'], ['offense', 'defense'], [23]),
@@ -86,6 +87,16 @@ function getPlayType(penalty) {
             return 'After Change of Team Possession';
         default:
             return 'Unknown';
+    }
+}
+function getResult(playType) {
+    switch (playType) {
+        case 'Loose Ball':
+            return getRandom(looseResults);
+        case 'Running Play':
+            return getRandom(runningResults);
+        default:
+            return getRandom(changeResults);
     }
 }
 function getRandomClockTime() {
