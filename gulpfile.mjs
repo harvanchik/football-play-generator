@@ -100,6 +100,13 @@ function svg() {
 }
 
 /**
+ * Copy favicon
+ */
+function favicon() {
+  return gulp.src([`${root}favicon.ico`]).pipe(gulp.dest(destination));
+}
+
+/**
  * Remove all content within the destination folder
  */
 function clean() {
@@ -109,7 +116,7 @@ function clean() {
 /**
  * The default task (triggered when running 'gulp' in the console)
  */
-gulp.task('default', gulp.series(clean, styles, javascript, images, svg, html));
+gulp.task('default', gulp.series(clean, styles, javascript, images, svg, favicon, html));
 /**
  * Task to remove the destination folder and its contents.
  */
