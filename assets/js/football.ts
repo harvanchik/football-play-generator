@@ -36,8 +36,6 @@ class Penalty {
   }
 }
 
-// note: any play that is not dead ball can be running or loose or after team change of possession
-
 // list of quarters
 const quarters = ['1st Quarter', '2nd Quarter', '3rd Quarter', '4th Quarter', 'Overtime'];
 // list of downs
