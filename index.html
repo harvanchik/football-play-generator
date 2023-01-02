@@ -59,8 +59,8 @@
         penaltyType: getRandom(penalty.types),
         playType: getPlayType(penalty)
       }"
-        @keyup.space.window="penaltyType = getRandom(penalty.types); playType = getRandom(this.playTypes)"
-        @keyup.enter.window="penaltyType = getRandom(penalty.types); playType = getRandom(this.playTypes)"
+        @keyup.space.window="penaltyType = getRandom(penalty.types); playType = getPlayType(penalty)"
+        @keyup.enter.window="penaltyType = getRandom(penalty.types); playType = getPlayType(penalty)"
         :class="!penalty?.name && 'hidden'"
         class="flex min-w-[57rem] flex-col space-y-1.5 rounded-md bg-black bg-opacity-30 p-3 px-6 text-4xl">
         <!-- START: Penalty Result, What, Who, When, Where -->

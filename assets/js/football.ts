@@ -44,8 +44,6 @@ const quarters = ['1st Quarter', '2nd Quarter', '3rd Quarter', '4th Quarter', 'O
 const downs = ['1st Down', '2nd Down', '3rd Down', '4th Down', 'PAT'];
 // list of PAT points
 const pats = ['1 PT', '2 PTS', '3 PTS'];
-// list of play types
-const playTypes = ['Loose Ball', 'Running Play', 'After Change of Team Possession'];
 // list results
 const looseResults = ['Completed Pass (1st Down)', 'Completed Pass (Short)', 'Incomplete Pass', 'Touchdown', 'Interception'];
 const runningResults = ['Deflagged (1st Down)', 'Deflagged (1st Down)', 'Deflagged (Short)', 'Deflagged (Short)', 'Touchdown', 'Touchdown', 'Safety'];
