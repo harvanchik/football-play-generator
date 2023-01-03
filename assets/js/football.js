@@ -54,7 +54,7 @@ var penalties = [
     new Penalty('Help the Runner', ['live'], ['offense'], [44], ['run', 'change'], 5, ['spot']),
     new Penalty('Unsportsmanlike Conduct', ['live', 'dead'], ['offense', 'defense'], [7, 27], ['run', 'loose', 'change'], 10, ['succeeding']),
     new Penalty('Illegal Player Equipment', ['dead'], ['offense', 'defense'], [7, 27], ['run'], 10, ['succeeding']),
-    new Penalty('Illegal Kick', ['live'], ['offense'], [31], ['run', 'change'], 10),
+    new Penalty('Illegal Kick, Quick Punt', ['live'], ['offense'], [31], ['run', 'change'], 10),
     new Penalty('Kick Catching Interference', ['live'], ['kicking'], [33], ['loose'], 10, ['spot']),
     new Penalty('Encroachment (2nd)', ['dead'], ['defense'], [7, 18], ['loose'], 10),
     new Penalty('Pass Interference', ['live'], ['offense', 'defense'], [33], ['loose'], 10),
@@ -139,9 +139,12 @@ function isUnderTwoMinutes(clockTime) {
     // return true if the time is at 2 minutes or below, false otherwise
     return minutesInSeconds + seconds <= 120;
 }
-function getSignals(penalty, penaltyType, who) {
+function getSignals(penalty, penaltyType, playType, who) {
     // if automatic first down and penalty is on the defense, remove loss of down signal
     if (penalty.isAutomaticFirst && who === 'defense')
+        return penalty.signals.filter(function (signal) { return signal !== 9; });
+    // if penalty occurs after change of team possession, remove loss of down signal
+    if (playType === 'After Change of Team Possession')
         return penalty.signals.filter(function (signal) { return signal !== 9; });
     // if loss of down and penalty is on the offense, remove automatic first down signal
     if (penalty.isLossOfDown && who !== 'defense')

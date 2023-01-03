@@ -101,7 +101,7 @@
         </div>
         <div class="mr-auto flex w-max flex-row items-center space-x-2.5">
           <p class="text-sky-500" x-text="penalty.distance + ' yards'"></p>
-          <p :class="!(penalty.isLossOfDown && who !== 'defense') && 'hidden'" class="text-sky-600" x-text="' (LoD)'"></p>
+          <p :class="!(penalty.isLossOfDown && who !== 'defense' && playType !== 'After Change of Team Possession') && 'hidden'" class="text-sky-600" x-text="' (LoD)'"></p>
           <p :class="!(penalty.isAutomaticFirst && who === 'defense') && 'hidden'" class="text-sky-600" x-text="' (Auto 1st)'"></p>
           <p :class="!penalty.isDisqualification && 'hidden'" class="capitalize text-red-600" x-text="' (Disqualified)'"></p>
           <p class="select-none text-[1.6rem] text-white/80">(enforcement)</p>
@@ -110,7 +110,7 @@
 
         <!-- START: Penalty Signals -->
         <div class="flex flex-row items-center justify-center space-x-5 pt-8 pb-4">
-          <template x-for="signal in getSignals(penalty, penaltyType, who)">
+          <template x-for="signal in getSignals(penalty, penaltyType, playType, who)">
             <img :src="'./assets/img/signal/' + signal + '.webp'" :alt="penalty.signal" class="h-48 select-none rounded-md" />
           </template>
         </div>
