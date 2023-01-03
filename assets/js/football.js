@@ -38,7 +38,7 @@ var penalties = [
     new Penalty('Delay of Game', ['dead'], ['offense'], [7, 21]),
     new Penalty('Illegally Consuming Time', ['dead', 'live'], ['offense'], [19], ['prior']),
     new Penalty('Illegal Substitution', ['dead', 'live'], ['offense', 'defense'], [22]),
-    new Penalty('Illegal Procedure', ['dead', 'live'], ['offense'], [19], ['prior']),
+    new Penalty('Illegal Procedure', ['live'], ['offense'], [19], ['prior']),
     new Penalty('Encroachment', ['dead'], ['defense'], [7, 18]),
     new Penalty('False Start', ['dead'], ['offense']),
     new Penalty('Illegal Snap', ['dead'], ['offense']),
@@ -77,8 +77,14 @@ var penalties = [
 function getRandom(list) {
     return list[Math.floor(Math.random() * list.length)];
 }
-function getPlayType(penalty) {
-    switch (getRandom(penalty.playTypes)) {
+function getPlayType(penalty, quarter) {
+    // get random play type
+    var playType = getRandom(penalty.playTypes);
+    // if in overtime, only allow loose ball or running play
+    if (quarter === 'overtime')
+        return playType === 'loose' ? 'loose' : 'run';
+    // switch on play type
+    switch (playType) {
         case 'loose':
             return 'Loose Ball';
         case 'change':
@@ -142,6 +148,15 @@ function getSignals(penalty, penaltyType, who) {
         return penalty.signals.filter(function (signal) { return signal !== 7; });
     // otherwise, return all signals
     return penalty.signals;
+}
+function getRandomWho(penalty, quarter) {
+    // get random who
+    var who = getRandom(penalty.who);
+    // if in overtime, only allow offense or defense
+    if (quarter === 'overtime')
+        return who === 'offense' ? 'offense' : 'defense';
+    // otherwise, return who
+    return who;
 }
 function getRandomNum() {
     // generate a random number between 1 and 99
