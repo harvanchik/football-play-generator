@@ -54,7 +54,7 @@ const penalties = [
   new Penalty('Delay of Game', ['dead'], ['offense'], [7, 21]),
   new Penalty('Illegally Consuming Time', ['dead', 'live'], ['offense'], [19], ['prior']),
   new Penalty('Illegal Substitution', ['dead', 'live'], ['offense', 'defense'], [22]),
-  new Penalty('Illegal Procedure', ['live'], ['offense'], [19], ['prior']),
+  new Penalty('Illegal Procedure', ['live'], ['offense'], [19], ['prior'], 5, ['previous', 'succeeding']),
   new Penalty('Encroachment', ['dead'], ['defense'], [7, 18]),
   new Penalty('False Start', ['dead'], ['offense']),
   new Penalty('Illegal Snap', ['dead'], ['offense']),
