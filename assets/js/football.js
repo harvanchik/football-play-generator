@@ -70,9 +70,9 @@ var penalties = [
     new Penalty('Illegal Kicking', ['live'], ['offense', 'defense'], [31], ['run', 'change'], 10, ['spot']),
     new Penalty('Illegal Participation', ['live'], ['offense', 'defense'], [28], ['run', 'loose', 'change'], 10, ['previous']),
     new Penalty('Personal Foul, Tampering w/ Flag Belt', ['dead'], ['offense', 'defense'], [38, 47, 8, 9], ['run'], 10, ['previous', 'succeeding'], true, true, true),
-    new Penalty('Unsportsmanlike Conduct, Contacting an Official', ['dead'], ['offense', 'defense'], [27, 47], ['run'], 10, ['succeeding'], false, false, true),
+    new Penalty('Unsportsmanlike Conduct, Contacting an Official', ['dead'], ['offense', 'defense'], [7, 27, 47], ['run'], 10, ['succeeding'], false, false, true),
     new Penalty('Personal Foul, Tackling the Runner', ['live'], ['defense'], [38, 47], ['run', 'change'], 10, ['spot'], false, false, true),
-    new Penalty('Personal Foul, Fighting an Opponent', ['dead'], ['offense', 'defense'], [38, 47], ['run'], 10, ['succeeding'], false, false, true),
+    new Penalty('Personal Foul, Fighting an Opponent', ['dead'], ['offense', 'defense'], [7, 38, 47], ['run'], 10, ['succeeding'], false, false, true),
 ];
 function getRandom(list) {
     return list[Math.floor(Math.random() * list.length)];
@@ -141,7 +141,7 @@ function getSignals(penalty, penaltyType, who) {
     if (penalty.isAutomaticFirst && who === 'defense')
         return penalty.signals.filter(function (signal) { return signal !== 9; });
     // if loss of down and penalty is on the offense, remove automatic first down signal
-    if (penalty.isLossOfDown && who === 'offense')
+    if (penalty.isLossOfDown && who !== 'defense')
         return penalty.signals.filter(function (signal) { return signal !== 8; });
     // if the penalty is live ball, remove dead ball signal
     if (penaltyType === 'live')

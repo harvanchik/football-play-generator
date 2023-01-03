@@ -88,7 +88,7 @@
         </div>
         <div class="mr-auto flex w-max flex-row items-center space-x-2.5">
           <p class="capitalize" x-text="who"></p>
-          <p :class="!penalty.signals.includes(27) && 'hidden'" x-text="'#' + playerNumber" class="text-stone-300"></p>
+          <p :class="(!(getSignals(penalty, penaltyType, who).includes(27) || penalty.isDisqualification)) && 'hidden'" x-text="'#' + playerNumber" class="text-stone-300"></p>
           <p class="select-none text-[1.6rem] text-white/80">(who)</p>
         </div>
         <div :class="penaltyType !== 'live' && 'hidden'" class="mr-auto flex w-max flex-row items-center space-x-2.5">
@@ -100,9 +100,9 @@
           <p class="select-none text-[1.6rem] text-white/80">(where)</p>
         </div>
         <div class="mr-auto flex w-max flex-row items-center space-x-2.5">
-          <p class="capitalize text-sky-500" x-text="penalty.distance + ' yards'"></p>
-          <p :class="(!penalty.isLossOfDown || penalty.who === 'defense') && 'hidden'" class="capitalize text-sky-600" x-text="' (LoD)'"></p>
-          <p :class="(!penalty.isAutomaticFirst || penalty.who !== 'defense') && 'hidden'" class="capitalize text-sky-600" x-text="' (Auto 1st)'"></p>
+          <p class="text-sky-500" x-text="penalty.distance + ' yards'"></p>
+          <p :class="!(penalty.isLossOfDown && who !== 'defense') && 'hidden'" class="text-sky-600" x-text="' (LoD)'"></p>
+          <p :class="!(penalty.isAutomaticFirst && who === 'defense') && 'hidden'" class="text-sky-600" x-text="' (Auto 1st)'"></p>
           <p :class="!penalty.isDisqualification && 'hidden'" class="capitalize text-red-600" x-text="' (Disqualified)'"></p>
           <p class="select-none text-[1.6rem] text-white/80">(enforcement)</p>
         </div>
@@ -110,7 +110,7 @@
 
         <!-- START: Penalty Signals -->
         <div class="flex flex-row items-center justify-center space-x-5 pt-8 pb-4">
-          <template x-for="signal in getSignals(penalty, who)">
+          <template x-for="signal in getSignals(penalty, penaltyType, who)">
             <img :src="'./assets/img/signal/' + signal + '.webp'" :alt="penalty.signal" class="h-48 select-none rounded-md" />
           </template>
         </div>
