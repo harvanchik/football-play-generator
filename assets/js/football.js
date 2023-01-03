@@ -102,10 +102,13 @@ function getResult(penalty, playType) {
     switch (playType) {
         case 'Loose Ball':
             result = getRandom(looseResults);
+            break;
         case 'After Change of Team Possession':
             result = getRandom(changeResults);
+            break;
         case 'Prior to Change of Team Possession':
             result = getRandom(priorResults);
+            break;
         default:
             result = getRandom(runningResults);
     }
