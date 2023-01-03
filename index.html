@@ -61,17 +61,17 @@
         x-data="{
         penaltyType: getRandom(penalty.types),
         playType: getPlayType(penalty),
-        who: getRandom(penalty.who),
+        who: getRandomWho(penalty, quarter),
         playerNumber: getRandomNum()
       }"
         @keyup.space.window="penaltyType = getRandom(penalty.types); 
                              playType = getPlayType(penalty); 
-                             who = getRandom(penalty.who);
+                             who = getRandomWho(penalty, quarter);
                              playerNumber = getRandomNum();
                              "
         @keyup.enter.window="penaltyType = getRandom(penalty.types); 
                              playType = getPlayType(penalty); 
-                             who = getRandom(penalty.who);
+                             who = getRandomWho(penalty, quarter);
                              playerNumber = getRandomNum();
                              "
         :class="!penalty?.name && 'hidden'"

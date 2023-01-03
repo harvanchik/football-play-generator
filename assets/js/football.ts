@@ -46,13 +46,14 @@ const pats = ['1 PT', '2 PTS', '3 PTS'];
 const looseResults = ['Completed Pass (1st Down)', 'Completed Pass (Short)', 'Incomplete Pass', 'Touchdown', 'Interception'];
 const runningResults = ['Deflagged (1st Down)', 'Deflagged (1st Down)', 'Deflagged (Short)', 'Deflagged (Short)', 'Touchdown', 'Touchdown', 'Safety'];
 const changeResults = ['Deflagged', 'Touchdown', 'Deflagged', 'Touchdown', 'Touchback', 'Safety'];
+const priorResults = ['Received (Deflagged)', 'Received (Deflagged)', 'Touchdown', 'Muffed', 'Touchback'];
 // list of penalties
 const penalties = [
   new Penalty('Failure to Wear Required Equipment', ['live'], ['offense', 'defense'], [23]),
   new Penalty('Delay of Game', ['dead'], ['offense'], [7, 21]),
-  new Penalty('Illegally Consuming Time', ['live'], ['offense'], [19], ['run']),
+  new Penalty('Illegally Consuming Time', ['dead', 'live'], ['offense'], [19], ['prior']),
   new Penalty('Illegal Substitution', ['dead', 'live'], ['offense', 'defense'], [22]),
-  new Penalty('Illegal Procedure', ['live'], ['offense', 'kicking']),
+  new Penalty('Illegal Procedure', ['live'], ['offense'], [19], ['prior']),
   new Penalty('Encroachment', ['dead'], ['defense'], [7, 18]),
   new Penalty('False Start', ['dead'], ['offense']),
   new Penalty('Illegal Snap', ['dead'], ['offense']),
@@ -93,14 +94,21 @@ function getRandom(list: any[]) {
   return list[Math.floor(Math.random() * list.length)];
 }
 
-function getPlayType(penalty: Penalty): string {
-  switch (getRandom(penalty.playTypes)) {
-    case 'run':
-      return 'Running Play';
+function getPlayType(penalty: Penalty, quarter): string {
+  // get random play type
+  let playType = getRandom(penalty.playTypes);
+  // if in overtime, only allow loose ball or running play
+  if (quarter === 'overtime') return playType === 'loose' ? 'loose' : 'run';
+  // switch on play type
+  switch (playType) {
     case 'loose':
       return 'Loose Ball';
-    default:
+    case 'change':
       return 'After Change of Team Possession';
+    case 'prior':
+      return 'Prior to Change of Team Possession';
+    default:
+      return 'Running Play';
   }
 }
 
@@ -111,15 +119,17 @@ function getResult(penalty: Penalty, playType: string): string {
   switch (playType) {
     case 'Loose Ball':
       result = getRandom(looseResults);
-    case 'Running Play':
-      result = getRandom(runningResults);
-    default:
+    case 'After Change of Team Possession':
       result = getRandom(changeResults);
+    case 'Prior to Change of Team Possession':
+      result = getRandom(priorResults);
+    default:
+      result = getRandom(runningResults);
   }
   // if penalty is intentional grounding, play must be incomplete
-  if (penalty.name.toLowerCase().includes('grounding')) {
-    result = 'Incomplete Pass';
-  }
+  if (penalty.name.toLowerCase().includes('grounding')) result = 'Incomplete Pass';
+  // if penalty is illegally consuming time, play can be received or muffed
+  if (penalty.name.toLowerCase().includes('consuming')) result = getRandom(['Received', 'Muffed']);
   // return a random result
   return result;
 }
@@ -157,6 +167,15 @@ function getSignals(penalty: Penalty, penaltyType: string, who: string): number[
   if (penaltyType === 'live') return penalty.signals.filter(signal => signal !== 7);
   // otherwise, return all signals
   return penalty.signals;
+}
+
+function getRandomWho(penalty: Penalty, quarter: string): string {
+  // get random who
+  let who = getRandom(penalty.who);
+  // if in overtime, only allow offense or defense
+  if (quarter === 'overtime') return who === 'offense' ? 'offense' : 'defense';
+  // otherwise, return who
+  return who;
 }
 
 function getRandomNum(): number {

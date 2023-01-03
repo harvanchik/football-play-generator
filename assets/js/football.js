@@ -31,13 +31,14 @@ var pats = ['1 PT', '2 PTS', '3 PTS'];
 var looseResults = ['Completed Pass (1st Down)', 'Completed Pass (Short)', 'Incomplete Pass', 'Touchdown', 'Interception'];
 var runningResults = ['Deflagged (1st Down)', 'Deflagged (1st Down)', 'Deflagged (Short)', 'Deflagged (Short)', 'Touchdown', 'Touchdown', 'Safety'];
 var changeResults = ['Deflagged', 'Touchdown', 'Deflagged', 'Touchdown', 'Touchback', 'Safety'];
+var priorResults = ['Received (Deflagged)', 'Received (Deflagged)', 'Touchdown', 'Muffed', 'Touchback'];
 // list of penalties
 var penalties = [
     new Penalty('Failure to Wear Required Equipment', ['live'], ['offense', 'defense'], [23]),
     new Penalty('Delay of Game', ['dead'], ['offense'], [7, 21]),
-    new Penalty('Illegally Consuming Time', ['live'], ['offense'], [19], ['run']),
+    new Penalty('Illegally Consuming Time', ['dead', 'live'], ['offense'], [19], ['prior']),
     new Penalty('Illegal Substitution', ['dead', 'live'], ['offense', 'defense'], [22]),
-    new Penalty('Illegal Procedure', ['live'], ['offense', 'kicking']),
+    new Penalty('Illegal Procedure', ['dead', 'live'], ['offense'], [19], ['prior']),
     new Penalty('Encroachment', ['dead'], ['defense'], [7, 18]),
     new Penalty('False Start', ['dead'], ['offense']),
     new Penalty('Illegal Snap', ['dead'], ['offense']),
@@ -78,12 +79,14 @@ function getRandom(list) {
 }
 function getPlayType(penalty) {
     switch (getRandom(penalty.playTypes)) {
-        case 'run':
-            return 'Running Play';
         case 'loose':
             return 'Loose Ball';
-        default:
+        case 'change':
             return 'After Change of Team Possession';
+        case 'prior':
+            return 'Prior to Change of Team Possession';
+        default:
+            return 'Running Play';
     }
 }
 function getResult(penalty, playType) {
@@ -93,15 +96,19 @@ function getResult(penalty, playType) {
     switch (playType) {
         case 'Loose Ball':
             result = getRandom(looseResults);
-        case 'Running Play':
-            result = getRandom(runningResults);
-        default:
+        case 'After Change of Team Possession':
             result = getRandom(changeResults);
+        case 'Prior to Change of Team Possession':
+            result = getRandom(priorResults);
+        default:
+            result = getRandom(runningResults);
     }
     // if penalty is intentional grounding, play must be incomplete
-    if (penalty.name.toLowerCase().includes('grounding')) {
+    if (penalty.name.toLowerCase().includes('grounding'))
         result = 'Incomplete Pass';
-    }
+    // if penalty is illegally consuming time, play can be received or muffed
+    if (penalty.name.toLowerCase().includes('consuming'))
+        result = getRandom(['Received', 'Muffed']);
     // return a random result
     return result;
 }
