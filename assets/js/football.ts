@@ -148,4 +148,13 @@ function isUnderTwoMinutes(clockTime: string): boolean {
   return minutesInSeconds + seconds <= 120;
 }
 
+function getSignals(penalty: Penalty, who: string): number[] {
+  // if automatic first down and penalty is on the defense, return clone penalty signals with '9' removed
+  if (penalty.isAutomaticFirst && who === 'defense') return penalty.signals.filter(signal => signal !== 9);
+  // if loss of down and penalty is on the offense, return penalty signals with '8' removed
+  if (penalty.isLossOfDown && who === 'offense') return penalty.signals.filter(signal => signal !== 8);
+  // otherwise, return all signals
+  return penalty.signals;
+}
+
 // run this in console to compile to javascript: tsc ./assets/js/football.ts

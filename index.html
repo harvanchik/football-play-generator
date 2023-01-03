@@ -60,7 +60,8 @@
       <div
         x-data="{
         penaltyType: getRandom(penalty.types),
-        playType: getPlayType(penalty)
+        playType: getPlayType(penalty),
+        who: getRandom(penalty.who)
       }"
         @keyup.space.window="penaltyType = getRandom(penalty.types); playType = getPlayType(penalty)"
         @keyup.enter.window="penaltyType = getRandom(penalty.types); playType = getPlayType(penalty)"
@@ -77,7 +78,7 @@
           <p class="select-none text-[1.6rem] text-white/80">(what)</p>
         </div>
         <div class="mr-auto flex w-max flex-row items-center space-x-2.5">
-          <p class="capitalize" x-text="getRandom(penalty.who)"></p>
+          <p class="capitalize" x-text="who"></p>
           <p class="select-none text-[1.6rem] text-white/80">(who)</p>
         </div>
         <div :class="penaltyType !== 'live' && 'hidden'" class="mr-auto flex w-max flex-row items-center space-x-2.5">
@@ -99,7 +100,7 @@
 
         <!-- START: Penalty Signals -->
         <div class="flex flex-row items-center justify-center space-x-5 pt-8 pb-4">
-          <template x-for="signal in penalty.signals">
+          <template x-for="signal in getSignals(penalty, who)">
             <img :src="'./assets/img/signal/' + signal + '.webp'" :alt="penalty.signal" class="h-48 select-none rounded-md" />
           </template>
         </div>
