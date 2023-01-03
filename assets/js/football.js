@@ -136,4 +136,8 @@ function getSignals(penalty, penaltyType, who) {
     // otherwise, return all signals
     return penalty.signals;
 }
+function getRandomNum() {
+    // generate a random number between 1 and 99
+    return Math.floor(Math.random() * 99) + 1;
+}
 // run this in console to compile to javascript: tsc ./assets/js/football.ts

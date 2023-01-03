@@ -159,4 +159,9 @@ function getSignals(penalty: Penalty, penaltyType: string, who: string): number[
   return penalty.signals;
 }
 
+function getRandomNum(): number {
+  // generate a random number between 1 and 99
+  return Math.floor(Math.random() * 99) + 1;
+}
+
 // run this in console to compile to javascript: tsc ./assets/js/football.ts

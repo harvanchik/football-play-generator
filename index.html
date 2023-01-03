@@ -61,10 +61,19 @@
         x-data="{
         penaltyType: getRandom(penalty.types),
         playType: getPlayType(penalty),
-        who: getRandom(penalty.who)
+        who: getRandom(penalty.who),
+        playerNumber: getRandomNum()
       }"
-        @keyup.space.window="penaltyType = getRandom(penalty.types); playType = getPlayType(penalty)"
-        @keyup.enter.window="penaltyType = getRandom(penalty.types); playType = getPlayType(penalty)"
+        @keyup.space.window="penaltyType = getRandom(penalty.types); 
+                             playType = getPlayType(penalty); 
+                             who = getRandom(penalty.who);
+                             playerNumber = getRandomNum();
+                             "
+        @keyup.enter.window="penaltyType = getRandom(penalty.types); 
+                             playType = getPlayType(penalty); 
+                             who = getRandom(penalty.who);
+                             playerNumber = getRandomNum();
+                             "
         :class="!penalty?.name && 'hidden'"
         class="flex min-w-[57rem] flex-col space-y-1.5 rounded-md bg-black bg-opacity-30 p-3 px-6 text-4xl">
         <!-- START: Penalty Result, What, Who, When, Where -->
@@ -79,6 +88,7 @@
         </div>
         <div class="mr-auto flex w-max flex-row items-center space-x-2.5">
           <p class="capitalize" x-text="who"></p>
+          <p :class="!penalty.signals.includes(27) && 'hidden'" x-text="'#' + playerNumber" class="text-stone-300"></p>
           <p class="select-none text-[1.6rem] text-white/80">(who)</p>
         </div>
         <div :class="penaltyType !== 'live' && 'hidden'" class="mr-auto flex w-max flex-row items-center space-x-2.5">
