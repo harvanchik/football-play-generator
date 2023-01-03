@@ -193,5 +193,3 @@ function getRandomNum(): number {
 }
 
 // run this in console to compile to javascript: tsc ./assets/js/football.ts
-
-// TODO: FIX: don't allow change of team possession on PAT or in overtime
