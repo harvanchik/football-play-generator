@@ -121,8 +121,11 @@ function getResult(penalty, playType, down) {
     if (penalty.name.toLowerCase().includes('grounding'))
         result = 'Incomplete Pass';
     // if penalty is illegally consuming time, play can be received or muffed
-    if (penalty.name.toLowerCase().includes('consuming'))
+    else if (penalty.name.toLowerCase().includes('consuming'))
         result = getRandom(['Received', 'Muffed']);
+    // if penalty involves kicking
+    else if (penalty.name.toLowerCase().includes('illegal kick'))
+        result = getRandom(['Fumble', 'Intercepted']);
     // return a random result
     return result;
 }
