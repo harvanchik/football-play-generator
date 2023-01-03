@@ -67,7 +67,7 @@ var penalties = [
     new Penalty('Flag Guarding', ['live'], ['offense'], [24], ['run', 'change'], 10, ['spot']),
     new Penalty('Holding', ['live'], ['offense', 'defense'], [42], ['run', 'loose', 'change'], 10, ['spot']),
     new Penalty('Illegal Batting', ['live'], ['offense'], [31], ['run', 'loose', 'change'], 10, ['spot']),
-    new Penalty('Illegal Kicking', ['live'], ['offense', 'defense'], [31], ['run', 'change'], 10, ['spot']),
+    new Penalty('Illegal Kicking', ['live'], ['offense'], [31], ['run', 'change'], 10, ['spot']),
     new Penalty('Illegal Participation', ['live'], ['offense', 'defense'], [28], ['run', 'loose', 'change'], 10, ['previous']),
     new Penalty('Personal Foul, Tampering w/ Flag Belt', ['dead'], ['offense', 'defense'], [38, 47, 8, 9], ['run'], 10, ['previous', 'succeeding'], true, true, true),
     new Penalty('Unsportsmanlike Conduct, Contacting an Official', ['dead'], ['offense', 'defense'], [7, 27, 47], ['run'], 10, ['succeeding'], false, false, true),
@@ -154,7 +154,7 @@ function getRandomWho(penalty, quarter) {
     var who = getRandom(penalty.who);
     // if in overtime, only allow offense or defense
     if (quarter === 'overtime')
-        return who === 'offense' ? 'offense' : 'defense';
+        who === 'offense' ? 'offense' : 'defense';
     // otherwise, return who
     return who;
 }
