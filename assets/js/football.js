@@ -32,6 +32,7 @@ var looseResults = ['Completed Pass (1st Down)', 'Completed Pass (Short)', 'Inco
 var runningResults = ['Deflagged (1st Down)', 'Deflagged (1st Down)', 'Deflagged (Short)', 'Deflagged (Short)', 'Touchdown', 'Touchdown', 'Safety'];
 var changeResults = ['Deflagged', 'Touchdown', 'Deflagged', 'Touchdown', 'Touchback', 'Safety'];
 var priorResults = ['Received (Deflagged)', 'Received (Deflagged)', 'Touchdown', 'Muffed', 'Touchback'];
+var patResults = ['PAT Good', 'Incomplete', 'Deflagged (Short)', 'Intercepted'];
 // list of penalties
 var penalties = [
     new Penalty('Failure to Wear Required Equipment', ['live'], ['offense', 'defense'], [23]),
@@ -77,12 +78,12 @@ var penalties = [
 function getRandom(list) {
     return list[Math.floor(Math.random() * list.length)];
 }
-function getPlayType(penalty, quarter) {
+function getPlayType(penalty, quarter, down) {
     // get random play type
     var playType = getRandom(penalty.playTypes);
     // if in overtime, only allow loose ball or running play
-    if (quarter === 'overtime')
-        return playType === 'loose' ? 'loose' : 'run';
+    if (quarter === 'Overtime' || down === 'PAT')
+        playType = playType === 'loose' ? 'loose' : 'run';
     // switch on play type
     switch (playType) {
         case 'loose':
@@ -95,23 +96,27 @@ function getPlayType(penalty, quarter) {
             return 'Running Play';
     }
 }
-function getResult(penalty, playType) {
+function getResult(penalty, playType, down) {
     // define results
     var result;
-    // switch on play type
-    switch (playType) {
-        case 'Loose Ball':
-            result = getRandom(looseResults);
-            break;
-        case 'After Change of Team Possession':
-            result = getRandom(changeResults);
-            break;
-        case 'Prior to Change of Team Possession':
-            result = getRandom(priorResults);
-            break;
-        default:
-            result = getRandom(runningResults);
-    }
+    // if the down is a PAT, result if from pat results
+    if (down === 'PAT')
+        result = getRandom(patResults);
+    // otherwise, switch on play type
+    else
+        switch (playType) {
+            case 'Loose Ball':
+                result = getRandom(looseResults);
+                break;
+            case 'After Change of Team Possession':
+                result = getRandom(changeResults);
+                break;
+            case 'Prior to Change of Team Possession':
+                result = getRandom(priorResults);
+                break;
+            default:
+                result = getRandom(runningResults);
+        }
     // if penalty is intentional grounding, play must be incomplete
     if (penalty.name.toLowerCase().includes('grounding'))
         result = 'Incomplete Pass';
@@ -169,3 +174,4 @@ function getRandomNum() {
     return Math.floor(Math.random() * 99) + 1;
 }
 // run this in console to compile to javascript: tsc ./assets/js/football.ts
+// TODO: FIX: don't allow change of team possession on PAT or in overtime
