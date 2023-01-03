@@ -66,8 +66,8 @@ const penalties = [
   new Penalty('Intentional Grounding', ['live'], ['offense'], [36, 9], ['loose'], 5, ['spot'], true),
   new Penalty('Illegal Reception (Co-Rec)', ['live'], ['offense'], [19, 9], ['run'], 5, ['previous'], true),
   new Penalty('Help the Runner', ['live'], ['offense'], [44], ['run', 'change'], 5, ['spot']),
-  new Penalty('Unsportsmanlike Conduct', ['live', 'dead'], ['offense', 'defense'], [27], ['run', 'loose', 'change'], 10, ['succeeding']),
-  new Penalty('Illegal Player Equipment', ['dead'], ['offense', 'defense'], [27], ['run'], 10, ['succeeding']),
+  new Penalty('Unsportsmanlike Conduct', ['live', 'dead'], ['offense', 'defense'], [7, 27], ['run', 'loose', 'change'], 10, ['succeeding']),
+  new Penalty('Illegal Player Equipment', ['dead'], ['offense', 'defense'], [7, 27], ['run'], 10, ['succeeding']),
   new Penalty('Illegal Kick', ['live'], ['offense'], [31], ['run', 'change'], 10),
   new Penalty('Kick Catching Interference', ['live'], ['kicking'], [33], ['loose'], 10, ['spot']),
   new Penalty('Encroachment (2nd)', ['dead'], ['defense'], [7, 18], ['loose'], 10),
@@ -148,11 +148,13 @@ function isUnderTwoMinutes(clockTime: string): boolean {
   return minutesInSeconds + seconds <= 120;
 }
 
-function getSignals(penalty: Penalty, who: string): number[] {
-  // if automatic first down and penalty is on the defense, return clone penalty signals with '9' removed
+function getSignals(penalty: Penalty, penaltyType: string, who: string): number[] {
+  // if automatic first down and penalty is on the defense, remove loss of down signal
   if (penalty.isAutomaticFirst && who === 'defense') return penalty.signals.filter(signal => signal !== 9);
-  // if loss of down and penalty is on the offense, return penalty signals with '8' removed
+  // if loss of down and penalty is on the offense, remove automatic first down signal
   if (penalty.isLossOfDown && who === 'offense') return penalty.signals.filter(signal => signal !== 8);
+  // if the penalty is live ball, remove dead ball signal
+  if (penaltyType === 'live') return penalty.signals.filter(signal => signal !== 7);
   // otherwise, return all signals
   return penalty.signals;
 }
