@@ -14,17 +14,19 @@
 
   <body x-data="gameManager" class="relative overflow-hidden bg-black/80">
     <!-- START: Background -->
-    <img src="./assets/img/field.webp" alt="football field" class="absolute scale-105 opacity-90 blur" />
+    <img src="./assets/img/field.webp" alt="football field" class="absolute h-full w-full object-cover opacity-90 blur" />
     <!-- END: Background -->
 
     <!-- START: Title -->
     <section
       @keyup.space.window="generate()"
       @keyup.enter.window="generate()"
+      @keyup.right.window="generate()"
       @keyup.backspace.window="undo()"
+      @keyup.left.window="undo()"
       class="relative flex h-screen w-full flex-col items-center justify-center space-y-7 font-semibold text-white">
       <!-- START: Title and Author -->
-      <p class="rounded-md bg-black bg-opacity-30 p-2 px-4">
+      <p class="rounded-md bg-black/30 p-2 px-4">
         <span>Random Flag Football Play Generator</span>
         <span class="text-white/70">by</span>
         <a href="https://jake.harvanchik.me" target="_blank" class="font-bold underline">Jake Harvanchik</a>
@@ -32,7 +34,7 @@
       <!-- END: Title and Author -->
 
       <!-- START: Quarter, Time, Down -->
-      <div class="flex min-w-[47rem] flex-row items-center justify-around space-x-10 rounded-md bg-black bg-opacity-20 p-3 pb-5 text-5xl">
+      <div class="flex min-w-[47rem] flex-row items-center justify-around space-x-10 rounded-md bg-black/20 p-3 pb-5 text-5xl">
         <div x-text="quarter" :class="quarter === 'Overtime' && 'underline'"></div>
         <div
           x-text="quarter === 'Overtime' ? '--:--' : clockTime"
@@ -47,7 +49,7 @@
       <!-- START: Penalty Information -->
       <div
         :class="!penalty?.name && 'hidden'"
-        class="flex min-w-[57rem] flex-col space-y-1.5 rounded-md bg-black bg-opacity-30 p-3 px-6 text-4xl">
+        class="flex min-w-[57rem] flex-col space-y-1.5 rounded-md bg-black/30 p-3 px-6 text-4xl">
         <!-- START: Penalty Result, What, Who, When, Where -->
         <div :class="penaltyType !== 'live' && 'hidden'" class="mr-auto flex w-max flex-row items-center space-x-2.5">
           <p class="text-emerald-500" x-text="getResult(penalty, playType, down)"></p>
@@ -92,11 +94,11 @@
 
       <!-- START: How to Generate New Play -->
       <div class="flex flex-col items-center space-y-2">
-        <p class="select-none rounded-md bg-black bg-opacity-30 p-3 px-6">
+        <p class="select-none rounded-md bg-black/30 p-3 px-6">
           <span>Press</span>
-          <span class="cursor-pointer rounded-md bg-black/[85] p-0.5 px-1" @click="generate()">SPACE</span>
+          <span class="cursor-pointer rounded-md bg-black/85 p-0.5 px-1" @click="generate()">SPACE</span>
           <span>or</span>
-          <span class="cursor-pointer rounded-md bg-black/[85] p-0.5 px-1" @click="generate()">ENTER</span>
+          <span class="cursor-pointer rounded-md bg-black/85 p-0.5 px-1" @click="generate()">ENTER</span>
           <span>to Generate a New Play</span>
         </p>
         
@@ -105,9 +107,9 @@
           @click="undo()"
           :class="!hasHistory && 'opacity-50 cursor-not-allowed'"
           :disabled="!hasHistory"
-          class="select-none rounded-md bg-black bg-opacity-30 p-2 px-6 hover:bg-opacity-50 transition-all">
+          class="select-none rounded-md bg-black/30 p-2 px-6 hover:bg-black/50 transition-all">
           <span>Press</span>
-          <span class="rounded-md bg-black/[85] p-0.5 px-1">BACKSPACE</span>
+          <span class="rounded-md bg-black/85 p-0.5 px-1">BACKSPACE</span>
           <span>to Undo</span>
         </button>
       </div>
