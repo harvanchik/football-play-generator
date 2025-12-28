@@ -1,13 +1,6 @@
 // define penalty object
-var Penalty = /** @class */ (function () {
-    function Penalty(name, types, who, signals, playTypes, distance, enforcementSpots, isLossOfDown, isAutomaticFirst, isDisqualification) {
-        if (signals === void 0) { signals = [19]; }
-        if (playTypes === void 0) { playTypes = ['loose', 'run', 'change']; }
-        if (distance === void 0) { distance = 5; }
-        if (enforcementSpots === void 0) { enforcementSpots = ['previous']; }
-        if (isLossOfDown === void 0) { isLossOfDown = false; }
-        if (isAutomaticFirst === void 0) { isAutomaticFirst = false; }
-        if (isDisqualification === void 0) { isDisqualification = false; }
+class Penalty {
+    constructor(name, types, who, signals = [19], playTypes = ['loose', 'run', 'change'], distance = 5, enforcementSpots = ['previous'], isLossOfDown = false, isAutomaticFirst = false, isDisqualification = false) {
         this.name = name;
         this.types = types;
         this.who = who;
@@ -19,22 +12,21 @@ var Penalty = /** @class */ (function () {
         this.isAutomaticFirst = isAutomaticFirst;
         this.isDisqualification = isDisqualification;
     }
-    return Penalty;
-}());
+}
 // list of quarters
-var quarters = ['1st Quarter', '2nd Quarter', '3rd Quarter', '4th Quarter', 'Overtime'];
+const quarters = ['1st Quarter', '2nd Quarter', '3rd Quarter', '4th Quarter', 'Overtime'];
 // list of downs
-var downs = ['1st Down', '2nd Down', '3rd Down', '4th Down', 'PAT'];
+const downs = ['1st Down', '2nd Down', '3rd Down', '4th Down', 'PAT'];
 // list of PAT points
-var pats = ['1 PT', '2 PTS', '3 PTS'];
+const pats = ['1 PT', '2 PTS', '3 PTS'];
 // list results
-var looseResults = ['Completed Pass (1st Down)', 'Completed Pass (Short)', 'Incomplete Pass', 'Touchdown', 'Interception'];
-var runningResults = ['Deflagged (1st Down)', 'Deflagged (1st Down)', 'Deflagged (Short)', 'Deflagged (Short)', 'Touchdown', 'Touchdown', 'Safety'];
-var changeResults = ['Deflagged', 'Touchdown', 'Deflagged', 'Touchdown', 'Touchback', 'Safety'];
-var priorResults = ['Received (Deflagged)', 'Received (Deflagged)', 'Touchdown', 'Muffed', 'Touchback'];
-var patResults = ['PAT Good', 'Incomplete', 'Deflagged (Short)', 'Intercepted'];
+const looseResults = ['Completed Pass (1st Down)', 'Completed Pass (Short)', 'Incomplete Pass', 'Touchdown', 'Interception'];
+const runningResults = ['Deflagged (1st Down)', 'Deflagged (1st Down)', 'Deflagged (Short)', 'Deflagged (Short)', 'Touchdown', 'Touchdown', 'Safety'];
+const changeResults = ['Deflagged', 'Touchdown', 'Deflagged', 'Touchdown', 'Touchback', 'Safety'];
+const priorResults = ['Received (Deflagged)', 'Received (Deflagged)', 'Touchdown', 'Muffed', 'Touchback'];
+const patResults = ['PAT Good', 'Incomplete', 'Deflagged (Short)', 'Intercepted'];
 // list of penalties
-var penalties = [
+const penalties = [
     new Penalty('Failure to Wear Required Equipment', ['live'], ['offense', 'defense'], [23]),
     new Penalty('Delay of Game', ['dead'], ['offense'], [7, 21]),
     new Penalty('Illegally Consuming Time', ['dead', 'live'], ['offense'], [19], ['prior']),
@@ -80,7 +72,7 @@ function getRandom(list) {
 }
 function getPlayType(penalty, quarter, down) {
     // get random play type
-    var playType = getRandom(penalty.playTypes);
+    let playType = getRandom(penalty.playTypes);
     // if in overtime, only allow loose ball or running play
     if (quarter === 'Overtime' || down === 'PAT')
         playType = playType === 'loose' ? 'loose' : 'run';
@@ -98,7 +90,7 @@ function getPlayType(penalty, quarter, down) {
 }
 function getResult(penalty, playType, down) {
     // define results
-    var result;
+    let result;
     // if the down is a PAT, result if from pat results
     if (down === 'PAT')
         result = getRandom(patResults);
@@ -131,41 +123,41 @@ function getResult(penalty, playType, down) {
 }
 function getRandomClockTime() {
     // generate a random number between 1 and 719 (12 minutes * 60 seconds - 1 second)
-    var seconds = Math.floor(Math.random() * 719) + 1;
+    const seconds = Math.floor(Math.random() * 719) + 1;
     // convert the number of seconds into minutes and seconds
-    var minutes = Math.floor(seconds / 60);
-    var secondsRemainder = seconds % 60;
+    const minutes = Math.floor(seconds / 60);
+    const secondsRemainder = seconds % 60;
     // return the clock time as a string in the format M:SS
-    return "".concat(minutes, ":").concat(secondsRemainder.toString().padStart(2, '0'));
+    return `${minutes}:${secondsRemainder.toString().padStart(2, '0')}`;
 }
 function isUnderTwoMinutes(clockTime) {
     // split the clock time into minutes and seconds
-    var _a = clockTime.split(':'), mins = _a[0], secs = _a[1];
+    const [mins, secs] = clockTime.split(':');
     // convert the minutes and seconds into numbers
-    var minutesInSeconds = parseInt(mins) * 60;
-    var seconds = parseInt(secs);
+    const minutesInSeconds = parseInt(mins) * 60;
+    const seconds = parseInt(secs);
     // return true if the time is at 2 minutes or below, false otherwise
     return minutesInSeconds + seconds <= 120;
 }
 function getSignals(penalty, penaltyType, playType, who) {
     // if automatic first down and penalty is on the defense, remove loss of down signal
     if (penalty.isAutomaticFirst && who === 'defense')
-        return penalty.signals.filter(function (signal) { return signal !== 9; });
+        return penalty.signals.filter(signal => signal !== 9);
     // if penalty occurs after change of team possession, remove loss of down signal
     if (playType === 'After Change of Team Possession')
-        return penalty.signals.filter(function (signal) { return signal !== 9; });
+        return penalty.signals.filter(signal => signal !== 9);
     // if loss of down and penalty is on the offense, remove automatic first down signal
     if (penalty.isLossOfDown && who !== 'defense')
-        return penalty.signals.filter(function (signal) { return signal !== 8; });
+        return penalty.signals.filter(signal => signal !== 8);
     // if the penalty is live ball, remove dead ball signal
     if (penaltyType === 'live')
-        return penalty.signals.filter(function (signal) { return signal !== 7; });
+        return penalty.signals.filter(signal => signal !== 7);
     // otherwise, return all signals
     return penalty.signals;
 }
 function getRandomWho(penalty, quarter) {
     // get random who
-    var who = getRandom(penalty.who);
+    let who = getRandom(penalty.who);
     // if in overtime, only allow offense or defense
     if (quarter === 'overtime')
         who === 'offense' ? 'offense' : 'defense';
@@ -176,4 +168,87 @@ function getRandomNum() {
     // generate a random number between 1 and 99
     return Math.floor(Math.random() * 99) + 1;
 }
-// run this in console to compile to javascript: tsc ./assets/js/football.ts
+const gameManager = {
+    playHistory: [],
+    recentPenalties: [],
+    // Current State
+    penalty: null,
+    quarter: '',
+    clockTime: '',
+    down: '',
+    patPoints: '',
+    penaltyType: '',
+    playType: '',
+    who: '',
+    playerNumber: 0,
+    init() {
+        this.generate();
+    },
+    generate() {
+        // Save current state to history if it exists
+        if (this.penalty) {
+            this.playHistory.push({
+                penalty: this.penalty,
+                quarter: this.quarter,
+                clockTime: this.clockTime,
+                down: this.down,
+                patPoints: this.patPoints,
+                penaltyType: this.penaltyType,
+                playType: this.playType,
+                who: this.who,
+                playerNumber: this.playerNumber
+            });
+            // Keep history limited to 5
+            if (this.playHistory.length > 5) {
+                this.playHistory.shift();
+            }
+        }
+        // 1. Select Penalty (Unique in last 15)
+        let newPenalty;
+        let attempts = 0;
+        do {
+            newPenalty = getRandom(penalties);
+            attempts++;
+        } while (this.recentPenalties.includes(newPenalty.name) && attempts < 100);
+        // Update recent penalties
+        this.recentPenalties.push(newPenalty.name);
+        if (this.recentPenalties.length > 15) {
+            this.recentPenalties.shift();
+        }
+        // 2. Select other attributes
+        this.penalty = newPenalty;
+        this.quarter = getRandom(quarters);
+        this.clockTime = getRandomClockTime();
+        this.down = getRandom(downs);
+        this.patPoints = getRandom(pats);
+        this.penaltyType = getRandom(this.penalty.types);
+        this.playType = getPlayType(this.penalty, this.quarter, this.down);
+        this.who = getRandomWho(this.penalty, this.quarter);
+        this.playerNumber = getRandomNum();
+    },
+    undo() {
+        if (this.playHistory.length > 0) {
+            // Restore last state
+            const previousState = this.playHistory.pop();
+            if (previousState) {
+                this.penalty = previousState.penalty;
+                this.quarter = previousState.quarter;
+                this.clockTime = previousState.clockTime;
+                this.down = previousState.down;
+                this.patPoints = previousState.patPoints;
+                this.penaltyType = previousState.penaltyType;
+                this.playType = previousState.playType;
+                this.who = previousState.who;
+                this.playerNumber = previousState.playerNumber;
+            }
+        }
+    },
+    get hasHistory() {
+        return this.playHistory.length > 0;
+    }
+};
+// Expose helper functions globally for Alpine if needed, or bind them in index.html
+// But since we are switching to gameManager, index.html should use gameManager properties.
+// Helper functions (getResult, isUnderTwoMinutes, getSignals) are used in HTML templates.
+// We need to keep them accessible. 
+// Since this compiles to a script in global scope, they are accessible.

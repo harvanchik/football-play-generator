@@ -21,7 +21,7 @@ class Penalty {
     enforcementSpots: string[] = ['previous'],
     isLossOfDown: boolean = false,
     isAutomaticFirst: boolean = false,
-    isDisqualification: boolean = false
+    isDisqualification: boolean = false,
   ) {
     this.name = name;
     this.types = types;
@@ -194,4 +194,109 @@ function getRandomNum(): number {
   return Math.floor(Math.random() * 99) + 1;
 }
 
-// run this in console to compile to javascript: tsc ./assets/js/football.ts
+// Game State Management
+interface PlayState {
+  penalty: Penalty;
+  quarter: string;
+  clockTime: string;
+  down: string;
+  patPoints: string;
+  penaltyType: string;
+  playType: string;
+  who: string;
+  playerNumber: number;
+}
+
+const gameManager = {
+  playHistory: [] as PlayState[],
+  recentPenalties: [] as string[],
+
+  // Current State
+  penalty: null as Penalty | null,
+  quarter: '',
+  clockTime: '',
+  down: '',
+  patPoints: '',
+  penaltyType: '',
+  playType: '',
+  who: '',
+  playerNumber: 0,
+
+  init() {
+    this.generate();
+  },
+
+  generate() {
+    // Save current state to history if it exists
+    if (this.penalty) {
+      this.playHistory.push({
+        penalty: this.penalty,
+        quarter: this.quarter,
+        clockTime: this.clockTime,
+        down: this.down,
+        patPoints: this.patPoints,
+        penaltyType: this.penaltyType,
+        playType: this.playType,
+        who: this.who,
+        playerNumber: this.playerNumber,
+      });
+      // Keep history limited to 5
+      if (this.playHistory.length > 5) {
+        this.playHistory.shift();
+      }
+    }
+
+    // 1. Select Penalty (Unique in last 15)
+    let newPenalty: Penalty;
+    let attempts = 0;
+    do {
+      newPenalty = getRandom(penalties);
+      attempts++;
+    } while (this.recentPenalties.includes(newPenalty.name) && attempts < 100);
+
+    // Update recent penalties
+    this.recentPenalties.push(newPenalty.name);
+    if (this.recentPenalties.length > 15) {
+      this.recentPenalties.shift();
+    }
+
+    // 2. Select other attributes
+    this.penalty = newPenalty;
+    this.quarter = getRandom(quarters);
+    this.clockTime = getRandomClockTime();
+    this.down = getRandom(downs);
+    this.patPoints = getRandom(pats);
+    this.penaltyType = getRandom(this.penalty.types);
+    this.playType = getPlayType(this.penalty, this.quarter, this.down);
+    this.who = getRandomWho(this.penalty, this.quarter);
+    this.playerNumber = getRandomNum();
+  },
+
+  undo() {
+    if (this.playHistory.length > 0) {
+      // Restore last state
+      const previousState = this.playHistory.pop();
+      if (previousState) {
+        this.penalty = previousState.penalty;
+        this.quarter = previousState.quarter;
+        this.clockTime = previousState.clockTime;
+        this.down = previousState.down;
+        this.patPoints = previousState.patPoints;
+        this.penaltyType = previousState.penaltyType;
+        this.playType = previousState.playType;
+        this.who = previousState.who;
+        this.playerNumber = previousState.playerNumber;
+      }
+    }
+  },
+
+  get hasHistory() {
+    return this.playHistory.length > 0;
+  },
+};
+
+// Expose helper functions globally for Alpine if needed, or bind them in index.html
+// But since we are switching to gameManager, index.html should use gameManager properties.
+// Helper functions (getResult, isUnderTwoMinutes, getSignals) are used in HTML templates.
+// We need to keep them accessible.
+// Since this compiles to a script in global scope, they are accessible.

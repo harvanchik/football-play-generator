@@ -12,31 +12,16 @@
     <!-- END: Scripts -->
   </head>
 
-  <body x-data class="relative overflow-hidden bg-black/80">
+  <body x-data="gameManager" class="relative overflow-hidden bg-black/80">
     <!-- START: Background -->
     <img src="./assets/img/field.webp" alt="football field" class="absolute scale-105 opacity-90 blur" />
     <!-- END: Background -->
 
     <!-- START: Title -->
     <section
-      x-data="{ penalty: getRandom(this.penalties),
-                quarter: getRandom(this.quarters),
-                clockTime: getRandomClockTime(),
-                down: getRandom(this.downs),
-                patPoints: getRandom(this.pats)
-              }"
-      @keyup.space.window="penalty = getRandom(this.penalties);
-                           quarter = getRandom(this.quarters);
-                           clockTime = getRandomClockTime();
-                           down = getRandom(this.downs);
-                           patPoints = getRandom(this.pats);
-                           "
-      @keyup.enter.window="penalty = getRandom(this.penalties);
-                           quarter = getRandom(this.quarters);
-                           clockTime = getRandomClockTime();
-                           down = getRandom(this.downs);
-                           patPoints = getRandom(this.pats);
-                           "
+      @keyup.space.window="generate()"
+      @keyup.enter.window="generate()"
+      @keyup.backspace.window="undo()"
       class="relative flex h-screen w-full flex-col items-center justify-center space-y-7 font-semibold text-white">
       <!-- START: Title and Author -->
       <p class="rounded-md bg-black bg-opacity-30 p-2 px-4">
@@ -61,22 +46,6 @@
 
       <!-- START: Penalty Information -->
       <div
-        x-data="{
-        penaltyType: getRandom(penalty.types),
-        playType: getPlayType(penalty, quarter, down),
-        who: getRandomWho(penalty, quarter),
-        playerNumber: getRandomNum()
-      }"
-        @keyup.space.window="penaltyType = getRandom(penalty.types); 
-                             playType = getPlayType(penalty, quarter, down); 
-                             who = getRandomWho(penalty, quarter);
-                             playerNumber = getRandomNum();
-                             "
-        @keyup.enter.window="penaltyType = getRandom(penalty.types); 
-                             playType = getPlayType(penalty, quarter, down); 
-                             who = getRandomWho(penalty, quarter);
-                             playerNumber = getRandomNum();
-                             "
         :class="!penalty?.name && 'hidden'"
         class="flex min-w-[57rem] flex-col space-y-1.5 rounded-md bg-black bg-opacity-30 p-3 px-6 text-4xl">
         <!-- START: Penalty Result, What, Who, When, Where -->
@@ -122,13 +91,26 @@
       <!-- END: Penalty Information -->
 
       <!-- START: How to Generate New Play -->
-      <p class="select-none rounded-md bg-black bg-opacity-30 p-3 px-6">
-        <span>Press</span>
-        <span class="cursor-pointer rounded-md bg-black/[85] p-0.5 px-1">SPACE</span>
-        <span>or</span>
-        <span class="cursor-pointer rounded-md bg-black/[85] p-0.5 px-1">ENTER</span>
-        <span>to Generate a New Play</span>
-      </p>
+      <div class="flex flex-col items-center space-y-2">
+        <p class="select-none rounded-md bg-black bg-opacity-30 p-3 px-6">
+          <span>Press</span>
+          <span class="cursor-pointer rounded-md bg-black/[85] p-0.5 px-1" @click="generate()">SPACE</span>
+          <span>or</span>
+          <span class="cursor-pointer rounded-md bg-black/[85] p-0.5 px-1" @click="generate()">ENTER</span>
+          <span>to Generate a New Play</span>
+        </p>
+        
+        <!-- Undo Button -->
+        <button 
+          @click="undo()"
+          :class="!hasHistory && 'opacity-50 cursor-not-allowed'"
+          :disabled="!hasHistory"
+          class="select-none rounded-md bg-black bg-opacity-30 p-2 px-6 hover:bg-opacity-50 transition-all">
+          <span>Press</span>
+          <span class="rounded-md bg-black/[85] p-0.5 px-1">BACKSPACE</span>
+          <span>to Undo</span>
+        </button>
+      </div>
       <!-- END: How to Generate New Play -->
     </section>
   </body>
