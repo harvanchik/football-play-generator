@@ -193,6 +193,7 @@
               <p class="mb-1 text-sm font-medium uppercase tracking-widest text-white/40">Enforcement Spot</p>
               <span
                 class="text-2xl font-bold capitalize text-purple-400"
+                :class="mode === 'practice' && !revealed && 'tracking-[0.5em]'"
                 x-text="mode === 'practice' && !revealed ? '?????' : (enforcementSpot === 'spot' ? 'Spot of Foul' : enforcementSpot)">
               </span>
             </div>
@@ -201,7 +202,11 @@
             <div>
               <p class="mb-1 text-sm font-medium uppercase tracking-widest text-white/40">Penalty Yardage</p>
               <div class="flex flex-wrap items-center-safe gap-4">
-                <span class="text-2xl font-bold text-sky-400" x-text="mode === 'practice' && !revealed ? '?????' : penalty?.distance + ' Yards'"> </span>
+                <span
+                  class="text-2xl font-bold text-sky-400"
+                  :class="mode === 'practice' && !revealed && 'tracking-[0.5em]'"
+                  x-text="mode === 'practice' && !revealed ? '?????' : penalty?.distance + ' Yards'">
+                </span>
 
                 <div x-show="mode === 'training' || revealed" class="flex flex-wrap gap-2">
                   <span
@@ -224,6 +229,8 @@
           <!-- Undo Button (Left Shoulder) -->
           <button
             @click="undo()"
+            @keydown.enter.prevent
+            @keyup.space.prevent
             :disabled="!hasHistory"
             :class="!hasHistory ? 'opacity-30 cursor-not-allowed' : 'hover:bg-white/10 active:scale-95 cursor-pointer'"
             class="group mb-2 hidden shrink-0 items-center gap-3 rounded-md border border-white/10 bg-black/40 p-3 transition-all md:flex">
@@ -256,6 +263,8 @@
           <!-- Generate Button (Right Shoulder) -->
           <button
             @click="mode === 'practice' && !revealed ? reveal() : generate()"
+            @keydown.enter.prevent
+            @keyup.space.prevent
             class="group mb-2 hidden shrink-0 cursor-pointer items-center gap-3 rounded-md border border-blue-400/30 bg-gradient-to-r from-blue-600 to-blue-500 p-3 shadow-[0_0_20px_rgba(37,99,235,0.3)] transition-all hover:scale-105 hover:shadow-[0_0_30px_rgba(37,99,235,0.5)] active:scale-95 md:flex"
             :class="mode === 'practice' && !revealed ? 'from-purple-600 to-purple-500 border-purple-400/30 shadow-[0_0_20px_rgba(147,51,234,0.3)] hover:shadow-[0_0_30px_rgba(147,51,234,0.5)]' : 'from-blue-600 to-blue-500 border-blue-400/30 shadow-[0_0_20px_rgba(37,99,235,0.3)] hover:shadow-[0_0_30px_rgba(37,99,235,0.5)]'">
             <div class="text-left">
@@ -285,6 +294,8 @@
         <!-- Undo Button -->
         <button
           @click="undo()"
+          @keydown.enter.prevent
+          @keyup.space.prevent
           :disabled="!hasHistory"
           :class="!hasHistory ? 'opacity-30 cursor-not-allowed' : 'hover:bg-white/10 active:scale-95'"
           class="group flex items-center gap-3 rounded-md border border-white/10 bg-black/40 px-6 py-3 transition-all">
@@ -298,6 +309,8 @@
         <!-- Generate Button -->
         <button
           @click="generate()"
+          @keydown.enter.prevent
+          @keyup.space.prevent
           class="group flex items-center gap-3 rounded-md border border-blue-400/30 bg-gradient-to-r from-blue-600 to-blue-500 px-8 py-4 shadow-[0_0_20px_rgba(37,99,235,0.3)] transition-all hover:scale-105 hover:shadow-[0_0_30px_rgba(37,99,235,0.5)] active:scale-95">
           <div class="text-left">
             <span class="block text-lg font-black tracking-wide text-white">Generate</span>
