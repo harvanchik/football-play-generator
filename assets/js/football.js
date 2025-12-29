@@ -181,6 +181,8 @@ const gameManager = {
     playType: '',
     who: '',
     playerNumber: 0,
+    result: '',
+    enforcementSpot: '',
     init() {
         this.generate();
     },
@@ -196,7 +198,9 @@ const gameManager = {
                 penaltyType: this.penaltyType,
                 playType: this.playType,
                 who: this.who,
-                playerNumber: this.playerNumber
+                playerNumber: this.playerNumber,
+                result: this.result,
+                enforcementSpot: this.enforcementSpot,
             });
             // Keep history limited to 5
             if (this.playHistory.length > 5) {
@@ -225,6 +229,9 @@ const gameManager = {
         this.playType = getPlayType(this.penalty, this.quarter, this.down);
         this.who = getRandomWho(this.penalty, this.quarter);
         this.playerNumber = getRandomNum();
+        // Calculate derived values and store them
+        this.result = getResult(this.penalty, this.playType, this.down);
+        this.enforcementSpot = getRandom(this.penalty.enforcementSpots);
     },
     undo() {
         if (this.playHistory.length > 0) {
@@ -240,15 +247,17 @@ const gameManager = {
                 this.playType = previousState.playType;
                 this.who = previousState.who;
                 this.playerNumber = previousState.playerNumber;
+                this.result = previousState.result;
+                this.enforcementSpot = previousState.enforcementSpot;
             }
         }
     },
     get hasHistory() {
         return this.playHistory.length > 0;
-    }
+    },
 };
 // Expose helper functions globally for Alpine if needed, or bind them in index.html
 // But since we are switching to gameManager, index.html should use gameManager properties.
 // Helper functions (getResult, isUnderTwoMinutes, getSignals) are used in HTML templates.
-// We need to keep them accessible. 
+// We need to keep them accessible.
 // Since this compiles to a script in global scope, they are accessible.

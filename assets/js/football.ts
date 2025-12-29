@@ -21,7 +21,7 @@ class Penalty {
     enforcementSpots: string[] = ['previous'],
     isLossOfDown: boolean = false,
     isAutomaticFirst: boolean = false,
-    isDisqualification: boolean = false,
+    isDisqualification: boolean = false
   ) {
     this.name = name;
     this.types = types;
@@ -205,6 +205,8 @@ interface PlayState {
   playType: string;
   who: string;
   playerNumber: number;
+  result: string;
+  enforcementSpot: string;
 }
 
 const gameManager = {
@@ -221,6 +223,8 @@ const gameManager = {
   playType: '',
   who: '',
   playerNumber: 0,
+  result: '',
+  enforcementSpot: '',
 
   init() {
     this.generate();
@@ -239,6 +243,8 @@ const gameManager = {
         playType: this.playType,
         who: this.who,
         playerNumber: this.playerNumber,
+        result: this.result,
+        enforcementSpot: this.enforcementSpot,
       });
       // Keep history limited to 5
       if (this.playHistory.length > 5) {
@@ -270,6 +276,10 @@ const gameManager = {
     this.playType = getPlayType(this.penalty, this.quarter, this.down);
     this.who = getRandomWho(this.penalty, this.quarter);
     this.playerNumber = getRandomNum();
+    
+    // Calculate derived values and store them
+    this.result = getResult(this.penalty, this.playType, this.down);
+    this.enforcementSpot = getRandom(this.penalty.enforcementSpots);
   },
 
   undo() {
@@ -286,6 +296,8 @@ const gameManager = {
         this.playType = previousState.playType;
         this.who = previousState.who;
         this.playerNumber = previousState.playerNumber;
+        this.result = previousState.result;
+        this.enforcementSpot = previousState.enforcementSpot;
       }
     }
   },
