@@ -21,7 +21,7 @@ class Penalty {
     enforcementSpots: string[] = ['previous'],
     isLossOfDown: boolean = false,
     isAutomaticFirst: boolean = false,
-    isDisqualification: boolean = false
+    isDisqualification: boolean = false,
   ) {
     this.name = name;
     this.types = types;
@@ -207,6 +207,8 @@ interface PlayState {
   playerNumber: number;
   result: string;
   enforcementSpot: string;
+  mode: string;
+  revealed: boolean;
 }
 
 const gameManager = {
@@ -225,6 +227,8 @@ const gameManager = {
   playerNumber: 0,
   result: '',
   enforcementSpot: '',
+  mode: 'training', // 'training' or 'practice'
+  revealed: false,
 
   init() {
     this.generate();
@@ -245,6 +249,8 @@ const gameManager = {
         playerNumber: this.playerNumber,
         result: this.result,
         enforcementSpot: this.enforcementSpot,
+        mode: this.mode,
+        revealed: this.revealed,
       });
       // Keep history limited to 5
       if (this.playHistory.length > 5) {
@@ -276,10 +282,13 @@ const gameManager = {
     this.playType = getPlayType(this.penalty, this.quarter, this.down);
     this.who = getRandomWho(this.penalty, this.quarter);
     this.playerNumber = getRandomNum();
-    
+
     // Calculate derived values and store them
     this.result = getResult(this.penalty, this.playType, this.down);
     this.enforcementSpot = getRandom(this.penalty.enforcementSpots);
+
+    // Reset revealed state for new play
+    this.revealed = false;
   },
 
   undo() {
@@ -298,6 +307,13 @@ const gameManager = {
         this.playerNumber = previousState.playerNumber;
         this.result = previousState.result;
         this.enforcementSpot = previousState.enforcementSpot;
+
+        // When undoing in practice mode, force reset revealed to false
+        if (this.mode === 'practice') {
+          this.revealed = false;
+        } else {
+          this.revealed = previousState.revealed;
+        }
       }
     }
   },
@@ -305,10 +321,16 @@ const gameManager = {
   get hasHistory() {
     return this.playHistory.length > 0;
   },
-};
 
-// Expose helper functions globally for Alpine if needed, or bind them in index.html
-// But since we are switching to gameManager, index.html should use gameManager properties.
-// Helper functions (getResult, isUnderTwoMinutes, getSignals) are used in HTML templates.
-// We need to keep them accessible.
-// Since this compiles to a script in global scope, they are accessible.
+  toggleMode() {
+    this.mode = this.mode === 'training' ? 'practice' : 'training';
+    // If switching to practice, hide current play details
+    if (this.mode === 'practice') {
+      this.revealed = false;
+    }
+  },
+
+  reveal() {
+    this.revealed = true;
+  },
+};
