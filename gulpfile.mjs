@@ -1,16 +1,15 @@
 import gulp from 'gulp';
-import { readFileSync } from 'fs';
+import { readFileSync, cpSync, mkdirSync } from 'fs';
 import { deleteAsync } from 'del';
 import htmlmin from 'gulp-htmlmin';
 import jsmin from 'gulp-minify';
 import svgmin from 'gulp-svgmin';
-import image from 'gulp-image';
 import rev from 'gulp-rev';
 import rewrite from 'gulp-rev-rewrite';
 
-const root = './'; // the path to the root of your project (you probably do not need to change this)
-const destination = `${root}docs`; // the destination folder of the gulped content (change as needed (i.e. 'docs'))
-const manifest = `${root}rev-manifest.json`; // the name of the manifest file (do not edit unless you know what you're doing)
+const root = './';
+const destination = `${root}docs`;
+const manifest = `${root}rev-manifest.json`;
 
 /**
  * Minify the HTML
@@ -72,18 +71,24 @@ function javascript() {
 }
 
 /**
- * Copy & Optimize the Images
+ * Copy Images using Node's fs module to ensure binary integrity
  */
-function images() {
-  return gulp
-    .src([`${root}assets/img/**/*.{png,jpg,jpeg,jfif,gif,webp,pdf,bmp,tif,tiff,raw,cr2,nef,sr2,heif,hdr,ppm,pgm,pbm,pnm,exif}`])
-    .pipe(
-      image({
-        quiet: true, // set to false to log results for every image processed
-      })
-    )
-    .pipe(gulp.dest(`${destination}/assets/img`))
-    .pipe(gulp.dest(root));
+function images(cb) {
+  try {
+    // Ensure destination directory exists
+    mkdirSync(`${destination}/assets/img`, { recursive: true });
+    
+    // Copy all files recursively, preserving binary data
+    cpSync(`${root}assets/img`, `${destination}/assets/img`, { 
+      recursive: true,
+      force: true,
+      preserveTimestamps: true
+    });
+    
+    cb();
+  } catch (err) {
+    cb(err);
+  }
 }
 
 /**
