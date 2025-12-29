@@ -3,13 +3,78 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-    <title>Flag Football Play Generator</title>
+
+    <!-- Primary Meta Tags -->
+    <title>Random Flag Football Penalty Generator | Training Tool for Officials</title>
+    <meta name="title" content="Random Flag Football Penalty Generator | Training Tool for Officials" />
+    <meta
+      name="description"
+      content="Interactive flag football penalty generator for officials training. Practice identifying fouls, enforcement spots, and penalty yardage with realistic game scenarios." />
+    <meta name="keywords" content="flag football, penalty generator, official training, referee training, football fouls, enforcement spots, penalty signals" />
+    <meta name="author" content="Jake Harvanchik" />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href="https://harvanchik.github.io/football-play-generator/" />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://harvanchik.github.io/football-play-generator/" />
+    <meta property="og:title" content="Random Flag Football Penalty Generator | Training Tool for Officials" />
+    <meta
+      property="og:description"
+      content="Interactive flag football penalty generator for officials training. Practice identifying fouls, enforcement spots, and penalty yardage with realistic game scenarios." />
+    <meta property="og:image" content="https://harvanchik.github.io/football-play-generator/assets/img/field.webp" />
+    <meta property="og:site_name" content="Flag Football Penalty Generator" />
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content="https://harvanchik.github.io/football-play-generator/" />
+    <meta property="twitter:title" content="Random Flag Football Penalty Generator | Training Tool" />
+    <meta property="twitter:description" content="Interactive penalty generator for flag football officials training. Practice mode available!" />
+    <meta property="twitter:image" content="https://harvanchik.github.io/football-play-generator/assets/img/field.webp" />
+    <meta property="twitter:creator" content="@harvanchik" />
+
+    <!-- Additional Meta Tags for Performance -->
+    <meta name="theme-color" content="#000000" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+    <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="./favicon.ico" />
+
+    <!-- Preconnect for Performance -->
+    <link rel="preconnect" href="https://unpkg.com" crossorigin />
+    <link rel="dns-prefetch" href="https://unpkg.com" />
+
+    <!-- Stylesheet -->
     <link rel="stylesheet" href="./assets/styles/styles.css" />
-    <!-- START: Scripts -->
+
+    <!-- Scripts -->
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <script src="./assets/js/football.js"></script>
-    <!-- END: Scripts -->
+
+    <!-- Structured Data for SEO -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "Flag Football Penalty Generator",
+        "description": "Interactive flag football penalty generator for officials training. Practice identifying fouls, enforcement spots, and penalty yardage with realistic game scenarios.",
+        "url": "https://harvanchik.github.io/football-play-generator/",
+        "applicationCategory": "EducationalApplication",
+        "operatingSystem": "Any",
+        "author": {
+          "@type": "Person",
+          "name": "Jake Harvanchik",
+          "url": "https://github.com/harvanchik"
+        },
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "USD"
+        },
+        "browserRequirements": "Requires JavaScript. Requires HTML5.",
+        "keywords": "flag football, penalty generator, official training, referee training, football fouls, enforcement spots, penalty signals"
+      }
+    </script>
   </head>
 
   <body x-data="gameManager" class="relative min-h-screen overflow-hidden bg-black font-sans">

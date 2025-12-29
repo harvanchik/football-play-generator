@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://harvanchik.github.io/football-play-generator/sitemap.xml

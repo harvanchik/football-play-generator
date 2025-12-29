@@ -1,5 +1,5 @@
 import gulp from 'gulp';
-import { readFileSync, cpSync, mkdirSync } from 'fs';
+import { readFileSync, cpSync, mkdirSync, writeFileSync } from 'fs';
 import { deleteAsync } from 'del';
 import htmlmin from 'gulp-htmlmin';
 import jsmin from 'gulp-minify';
@@ -112,6 +112,37 @@ function favicon() {
 }
 
 /**
+ * Generate robots.txt for SEO
+ */
+function robotsTxt(cb) {
+  const robotsContent = `User-agent: *
+Allow: /
+
+Sitemap: https://harvanchik.github.io/football-play-generator/sitemap.xml`;
+  
+  writeFileSync(`${destination}/robots.txt`, robotsContent);
+  cb();
+}
+
+/**
+ * Generate sitemap.xml for SEO
+ */
+function sitemap(cb) {
+  const sitemapContent = `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>https://harvanchik.github.io/football-play-generator/</loc>
+    <lastmod>${new Date().toISOString().split('T')[0]}</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>1.0</priority>
+  </url>
+</urlset>`;
+  
+  writeFileSync(`${destination}/sitemap.xml`, sitemapContent);
+  cb();
+}
+
+/**
  * Remove all content within the destination folder
  */
 function clean() {
@@ -119,9 +150,26 @@ function clean() {
 }
 
 /**
- * The default task (triggered when running 'gulp' in the console)
+ * The default task - Optimized build order for performance
+ * 1. Clean old build
+ * 2. Process and hash CSS first to create manifest
+ * 3. Process and hash JS (merge with manifest)
+ * 4. Process images, SVG, favicon in parallel (SVG merges with manifest)
+ * 5. Process HTML with asset hashing references
+ * 6. Generate SEO files (robots.txt, sitemap.xml) in parallel
  */
-gulp.task('default', gulp.series(clean, styles, javascript, images, svg, favicon, html));
+gulp.task(
+  'default',
+  gulp.series(
+    clean,
+    styles,
+    javascript,
+    gulp.parallel(images, svg, favicon),
+    html,
+    gulp.parallel(robotsTxt, sitemap)
+  )
+);
+
 /**
  * Task to remove the destination folder and its contents.
  */
