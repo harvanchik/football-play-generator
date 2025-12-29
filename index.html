@@ -127,7 +127,7 @@
           <span
             class="font-mono text-3xl font-bold text-white md:text-5xl"
             x-text="quarter === 'Overtime' ? '--:--' : clockTime"
-            :class="((quarter.includes('2') || quarter.includes('4')) && isUnderTwoMinutes(clockTime)) && 'text-red-500'">
+            :class="((quarter.includes('2') || quarter.includes('4')) && isUnderTwoMinutes(clockTime)) && 'text-red-500/80!'">
           </span>
         </div>
         <div class="flex w-1/3 flex-col items-center">
@@ -174,7 +174,7 @@
             <div>
               <p class="mb-1 text-sm font-medium uppercase tracking-widest text-white/40">Foul On</p>
               <div class="flex items-baseline space-x-2">
-                <span class="text-2xl font-bold capitalize text-white" x-text="who"></span>
+                <span class="text-2xl font-bold capitalize text-white" x-text="who?.replace('kicking', 'Kicking Team').replace('receiving', 'Receiving Team')"></span>
                 <span
                   x-show="getSignals(penalty, penaltyType, who).includes(27) || penalty?.isDisqualification"
                   x-text="'#' + playerNumber"
