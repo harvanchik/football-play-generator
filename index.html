@@ -73,7 +73,7 @@
           <div class="grid grid-cols-1 gap-x-4 gap-y-8 sm:grid-cols-2">
             <!-- Who -->
             <div>
-              <p class="mb-1 text-xs font-bold uppercase tracking-widest text-white/40">Foul On</p>
+              <p class="mb-1 text-sm font-medium uppercase tracking-widest text-white/40">Foul On</p>
               <div class="flex items-baseline space-x-2">
                 <span class="text-2xl font-bold capitalize text-white" x-text="who"></span>
                 <span
@@ -84,20 +84,20 @@
             </div>
 
             <!-- When -->
-            <div :class="penaltyType !== 'live' && 'opacity-50'">
-              <p class="mb-1 text-xs font-bold uppercase tracking-widest text-white/40">Occurred</p>
-              <span class="text-xl font-medium text-white" x-text="playType"></span>
+            <div>
+              <p class="mb-1 text-sm font-medium uppercase tracking-widest text-white/40">Occurred</p>
+              <span class="text-2xl font-bold text-white" x-text="playType"></span>
             </div>
 
             <!-- Where -->
             <div>
-              <p class="mb-1 text-xs font-bold uppercase tracking-widest text-white/40">Enforcement Spot</p>
-              <span class="text-xl font-medium capitalize text-purple-400" x-text="enforcementSpot"></span>
+              <p class="mb-1 text-sm font-medium uppercase tracking-widest text-white/40">Enforcement Spot</p>
+              <span class="text-2xl font-bold capitalize text-purple-400" x-text="enforcementSpot"></span>
             </div>
 
             <!-- Distance & Notes -->
             <div>
-              <p class="mb-1 text-xs font-bold uppercase tracking-widest text-white/40">Penalty</p>
+              <p class="mb-1 text-sm font-medium uppercase tracking-widest text-white/40">Penalty</p>
               <div class="flex flex-wrap items-center-safe gap-4">
                 <span class="text-2xl font-bold text-sky-400" x-text="penalty?.distance + ' Yards'"></span>
                 <div class="flex flex-wrap gap-2">
