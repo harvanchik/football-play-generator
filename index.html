@@ -112,31 +112,31 @@
       </button>
     </div>
 
-    <div class="relative z-10 flex min-h-screen flex-col items-center justify-center p-4">
+    <div class="relative z-10 flex min-h-screen flex-col items-center justify-center p-1 pt-14 md:p-4">
       <!-- START: Scoreboard -->
-      <div class="mb-8 flex w-full max-w-4xl items-center justify-between rounded-xl border border-white/10 bg-black/60 p-4 shadow-lg backdrop-blur-md">
+      <div class="mb-2 flex w-full max-w-4xl items-center justify-between rounded-xl border border-white/10 bg-black/60 p-2 shadow-lg backdrop-blur-md md:mb-8 md:p-4">
         <div class="flex w-1/3 flex-col items-center border-r border-white/10">
-          <span class="text-sm uppercase tracking-wider text-white/60">Quarter</span>
+          <span class="text-xs uppercase tracking-wider text-white/60 md:text-sm">Quarter</span>
           <span
-            class="text-3xl font-bold text-white md:text-5xl"
+            class="text-xl font-bold text-white md:text-5xl"
             x-text="quarter === 'Overtime' ? 'Overtime' : quarter.replace('1st Quarter', 'First').replace('2nd Quarter', 'Second').replace('3rd Quarter', 'Third').replace('4th Quarter', 'Fourth')"
-            :class="quarter === 'Overtime' ? 'text-yellow-600 text-2xl md:text-4xl' : 'text-yellow-400 text-2xl md:text-4xl'"></span>
+            :class="quarter === 'Overtime' ? 'text-yellow-600 text-lg md:text-4xl' : 'text-yellow-400 text-lg md:text-4xl'"></span>
         </div>
         <div class="flex w-1/3 flex-col items-center border-r border-white/10">
-          <span class="text-sm uppercase tracking-wider text-white/60">Clock</span>
+          <span class="text-xs uppercase tracking-wider text-white/60 md:text-sm">Clock</span>
           <span
-            class="font-mono text-3xl font-bold text-white md:text-5xl"
+            class="font-mono text-xl font-bold text-white md:text-5xl"
             x-text="quarter === 'Overtime' ? '--:--' : clockTime"
             :class="((quarter.includes('2') || quarter.includes('4')) && isUnderTwoMinutes(clockTime)) && 'text-red-500/80!'">
           </span>
         </div>
         <div class="flex w-1/3 flex-col items-center">
-          <span class="text-sm uppercase tracking-wider text-white/60">Down</span>
+          <span class="text-xs uppercase tracking-wider text-white/60 md:text-sm">Down</span>
           <div class="flex items-baseline space-x-2">
             <span
-              class="text-3xl font-bold text-orange-500 md:text-5xl"
+              class="text-xl font-bold text-orange-500 md:text-5xl"
               x-text="down === 'PAT' ? 'P.A.T.' : down.replace('1st Down', 'First').replace('2nd Down', 'Second').replace('3rd Down', 'Third').replace('4th Down', 'Fourth')"></span>
-            <span x-show="down === 'PAT'" x-text="'(' + patPoints + ')'" class="text-xl text-orange-400"></span>
+            <span x-show="down === 'PAT'" x-text="'(' + patPoints + ')'" class="text-lg text-orange-400 md:text-xl"></span>
           </div>
         </div>
       </div>
@@ -150,15 +150,15 @@
         @keyup.backspace.window="undo()"
         @keyup.left.window="undo()"
         :class="!penalty?.name && 'opacity-0 translate-y-4'"
-        class="flex w-4xl transform flex-col gap-6 transition-all duration-300">
+        class="flex w-full max-w-4xl transform flex-col gap-2 transition-all duration-300 md:gap-6">
         <!-- Main Details Card -->
-        <div class="flex flex-col justify-between rounded-xl border border-white/10 bg-black/60 py-5 px-7 shadow-xl backdrop-blur-md w-full mx-auto">
+        <div class="flex flex-col justify-between rounded-xl border border-white/10 bg-black/60 p-3 shadow-xl backdrop-blur-md w-full mx-auto md:px-7 md:py-5">
           <!-- Header: Result & Penalty Name -->
-          <div class="mb-6 border-b border-white/10 pb-6">
+          <div class="mb-2 border-b border-white/10 pb-2 md:mb-6 md:pb-6">
             <div class="flex items-start justify-between gap-4">
               <div class="flex grow flex-col">
-                <h2 class="text-4xl pt-4 font-black leading-10 text-white md:text-5xl" x-text="penalty?.name"></h2>
-                <span class="pt-4 block text-2xl font-bold tracking-tight text-emerald-400" x-text="result"></span>
+                <h2 class="pt-1 text-2xl font-black leading-tight text-white md:pt-4 md:text-5xl md:leading-10" x-text="penalty?.name"></h2>
+                <span class="block pt-1 text-lg font-bold tracking-tight text-emerald-400 md:pt-4 md:text-2xl" x-text="result"></span>
               </div>
               <span
                 class="shrink-0 rounded-full border px-4 py-1.5 text-sm font-bold uppercase tracking-wider"
@@ -169,30 +169,30 @@
           </div>
 
           <!-- Details Grid -->
-          <div class="grid grid-cols-1 gap-x-4 gap-y-8 sm:grid-cols-2">
+          <div class="grid grid-cols-1 gap-x-4 gap-y-2 sm:grid-cols-2 md:gap-y-8">
             <!-- Who -->
             <div>
-              <p class="mb-1 text-sm font-medium uppercase tracking-widest text-white/40">Foul On</p>
+              <p class="mb-1 text-xs font-medium uppercase tracking-widest text-white/40 md:text-sm">Foul On</p>
               <div class="flex items-baseline space-x-2">
-                <span class="text-2xl font-bold capitalize text-white" x-text="who?.replace('kicking', 'Kicking Team').replace('receiving', 'Receiving Team')"></span>
+                <span class="text-lg font-bold capitalize text-white md:text-2xl" x-text="who?.replace('kicking', 'Kicking Team').replace('receiving', 'Receiving Team')"></span>
                 <span
                   x-show="getSignals(penalty, penaltyType, who).includes(27) || penalty?.isDisqualification"
                   x-text="'#' + playerNumber"
-                  class="font-mono text-lg text-white/60"></span>
+                  class="font-mono text-base text-white/60 md:text-lg"></span>
               </div>
             </div>
 
             <!-- When -->
             <div>
-              <p class="mb-1 text-sm font-medium uppercase tracking-widest text-white/40">Occurred</p>
-              <span class="text-2xl font-bold text-white" x-text="playType"></span>
+              <p class="mb-1 text-xs font-medium uppercase tracking-widest text-white/40 md:text-sm">Occurred</p>
+              <span class="text-lg font-bold text-white md:text-2xl" x-text="playType"></span>
             </div>
 
             <!-- Where -->
             <div>
-              <p class="mb-1 text-sm font-medium uppercase tracking-widest text-white/40">Enforcement Spot</p>
+              <p class="mb-1 text-xs font-medium uppercase tracking-widest text-white/40 md:text-sm">Enforcement Spot</p>
               <span
-                class="text-2xl font-bold capitalize text-purple-400"
+                class="text-lg font-bold capitalize text-purple-400 md:text-2xl"
                 :class="mode === 'practice' && !revealed && 'tracking-[0.5em]'"
                 x-text="mode === 'practice' && !revealed ? '?????' : (enforcementSpot === 'spot' ? 'Spot of Foul' : enforcementSpot)">
               </span>
@@ -200,10 +200,10 @@
 
             <!-- Distance & Notes -->
             <div>
-              <p class="mb-1 text-sm font-medium uppercase tracking-widest text-white/40">Penalty Yardage</p>
+              <p class="mb-1 text-xs font-medium uppercase tracking-widest text-white/40 md:text-sm">Penalty Yardage</p>
               <div class="flex flex-wrap items-center-safe gap-4">
                 <span
-                  class="text-2xl font-bold text-sky-400"
+                  class="text-lg font-bold text-sky-400 md:text-2xl"
                   :class="mode === 'practice' && !revealed && 'tracking-[0.5em]'"
                   x-text="mode === 'practice' && !revealed ? '?????' : penalty?.distance + ' Yards'">
                 </span>
@@ -247,14 +247,14 @@
 
           <!-- Signal Images (Center) -->
           <div
-            class="flex grow flex-nowrap items-center justify-center gap-4 overflow-hidden rounded-xl border border-white/10 bg-black/40 p-4 shadow-xl backdrop-blur-sm relative">
+            class="relative flex grow flex-nowrap items-center justify-center gap-4 overflow-hidden rounded-xl border border-white/10 bg-black/40 p-2 shadow-xl backdrop-blur-sm md:p-4">
             <template x-for="signal in getSignals(penalty, penaltyType, playType, who)">
               <img
                 :src="'./assets/img/signal/' + signal + '.webp'"
                 :alt="penalty.signal"
-                class="h-auto max-h-40 w-auto max-w-full shrink rounded-lg object-contain shadow-2xl transition-all duration-0 hover:scale-105"
+                class="h-20 w-auto max-w-full shrink rounded-lg object-contain shadow-2xl transition-all duration-0 hover:scale-105 md:h-auto md:max-h-40"
                 :class="[
-                  getSignals(penalty, penaltyType, playType, who).length > 2 && 'h-32! max-h-32!',
+                  getSignals(penalty, penaltyType, playType, who).length > 2 && 'h-16! max-h-16! md:h-32! md:max-h-32!',
                   mode === 'practice' && !revealed ? 'blur-md brightness-50' : 'blur-0'
                 ]" />
             </template>
@@ -290,7 +290,7 @@
       <!-- END: Play Card -->
 
       <!-- Mobile Controls (Visible only on smaller screens) -->
-      <div class="mt-8 flex w-full max-w-4xl justify-between px-4 md:hidden">
+      <div class="mt-2 flex w-full max-w-4xl justify-between px-0 md:hidden md:px-4">
         <!-- Undo Button -->
         <button
           @click="undo()"
@@ -298,7 +298,7 @@
           @keyup.space.prevent
           :disabled="!hasHistory"
           :class="!hasHistory ? 'opacity-30 cursor-not-allowed' : 'hover:bg-white/10 active:scale-95'"
-          class="group flex items-center gap-3 rounded-md border border-white/10 bg-black/40 px-6 py-3 transition-all">
+          class="group flex items-center gap-2 rounded-md border border-white/10 bg-black/40 px-4 py-2 transition-all">
           <div class="flex h-8 w-8 items-center justify-center rounded-full bg-white/10 group-hover:bg-white/20">
             <svg class="h-4 w-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
@@ -311,12 +311,12 @@
           @click="generate()"
           @keydown.enter.prevent
           @keyup.space.prevent
-          class="group flex items-center gap-3 rounded-md border border-blue-400/30 bg-gradient-to-r from-blue-600 to-blue-500 px-8 py-4 shadow-[0_0_20px_rgba(37,99,235,0.3)] transition-all hover:scale-105 hover:shadow-[0_0_30px_rgba(37,99,235,0.5)] active:scale-95">
+          class="group flex items-center gap-2 rounded-md border border-blue-400/30 bg-gradient-to-r from-blue-600 to-blue-500 px-4 py-2 shadow-[0_0_20px_rgba(37,99,235,0.3)] transition-all hover:scale-105 hover:shadow-[0_0_30px_rgba(37,99,235,0.5)] active:scale-95">
           <div class="text-left">
-            <span class="block text-lg font-black tracking-wide text-white">Generate</span>
+            <span class="block text-sm font-black tracking-wide text-white">Generate</span>
           </div>
-          <div class="flex h-10 w-10 items-center justify-center rounded-full bg-white/20 group-hover:bg-white/30">
-            <svg class="h-5 w-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <div class="flex h-8 w-8 items-center justify-center rounded-full bg-white/20 group-hover:bg-white/30">
+            <svg class="h-4 w-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
             </svg>
           </div>
@@ -324,7 +324,7 @@
       </div>
 
       <!-- Footer Author -->
-      <div class="mt-8">
+      <div class="mt-2 md:mt-8">
         <p class="rounded-full bg-black/20 px-4 py-1 text-sm text-white/40 backdrop-blur-sm">
           Random Flag Football Play Generator by
           <a href="https://github.com/harvanchik" target="_blank" class="font-bold text-white/60 hover:text-white underline decoration-white/30 underline-offset-2"
