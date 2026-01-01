@@ -122,7 +122,7 @@
     </script>
   </head>
 
-  <body x-data="gameManager" class="relative min-h-screen-safe overflow-hidden bg-black font-sans">
+  <body x-data="gameManager" class="relative min-h-screen-safe overflow-x-hidden overflow-y-auto bg-black font-sans">
     <!-- START: Background -->
     <img src="./assets/img/field.webp" alt="football field" class="absolute inset-0 h-full w-full object-cover opacity-75 blur-sm" />
     <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-black/50"></div>
@@ -297,9 +297,9 @@
               <img
                 :src="'./assets/img/signal/' + signal + '.webp'"
                 :alt="penalty.signal"
-                class="h-auto max-h-48 w-auto max-w-full shrink rounded-lg object-contain shadow-2xl transition-all duration-0 hover:scale-105 md:h-32"
+                class="h-auto max-h-32 w-auto max-w-full shrink rounded-lg object-contain shadow-2xl transition-all duration-0 hover:scale-105 md:max-h-48 md:h-32"
                 :class="[
-                  getSignals(penalty, penaltyType, playType, who).length >= 2 && 'max-h-32! md:max-h-32!',
+                  getSignals(penalty, penaltyType, playType, who).length >= 2 && 'max-h-24! md:max-h-32!',
                   mode === 'practice' && !revealed ? 'blur-md brightness-50' : 'blur-0'
                 ]" />
             </template>
@@ -402,12 +402,16 @@
       </div>
 
       <!-- Footer Author -->
-      <div class="mt-2 md:mt-8">
+      <div class="mt-2 mb-2 md:mt-8 flex flex-col gap-2">
         <p class="rounded-full bg-black/20 px-4 py-1 text-sm text-white/40 backdrop-blur-sm text-center">
           Random Flag Football Play Generator by
           <a href="https://github.com/harvanchik" target="_blank" class="font-bold text-white/60 hover:text-white underline decoration-white/30 underline-offset-2"
             >Jake Harvanchik</a
           >
+        </p>
+        <p class="rounded-full bg-black/20 px-4 py-1 text-sm text-white/40 backdrop-blur-sm text-center">
+          Check out the
+          <a href="https://caseplay.org" target="_blank" class="font-bold text-white/60 hover:text-white underline decoration-white/30 underline-offset-2">Case Play Database</a>
         </p>
       </div>
     </div>

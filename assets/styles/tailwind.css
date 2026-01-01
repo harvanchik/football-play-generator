@@ -9,6 +9,16 @@
   --vh: 1vh;
 }
 
+/* Hide scrollbar but allow scrolling */
+body {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+}
+
+body::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
+}
+
 @supports (-webkit-touch-callout: none) {
   /* iOS-specific viewport height handling */
   .min-h-screen-safe {
@@ -42,4 +52,13 @@
 
 .safe-padding-right {
   padding-right: env(safe-area-inset-right);
+}
+
+/* Add max-height utilities for signal images (used in Alpine.js :class bindings) */
+.max-h-24\! {
+  max-height: 6rem !important;
+}
+
+.max-h-32\! {
+  max-height: 8rem !important;
 }

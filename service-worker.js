@@ -1,8 +1,8 @@
-const CACHE_NAME = 'penalty-generator-v1';
+const CACHE_NAME = 'penalty-generator-v2';
 const urlsToCache = [
   '/football-play-generator/',
   '/football-play-generator/index.html',
-  '/football-play-generator/assets/styles/styles-433c20905b.css',
+  '/football-play-generator/assets/styles/styles-16a7812e4f.css',
   '/football-play-generator/assets/js/football-4264beefe2.js',
   '/football-play-generator/assets/img/field.webp',
   '/football-play-generator/favicon.ico',
