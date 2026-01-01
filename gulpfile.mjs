@@ -112,10 +112,24 @@ function favicon() {
 }
 
 /**
- * Copy V1 Files
+ * Copy V1 Files using Node's fs module to ensure binary integrity and correct copying
  */
-function copyV1() {
-  return gulp.src([`${root}v1/index.html`, `${root}v1/assets/**/*`, `${root}v1/favicon.ico`], { base: root }).pipe(gulp.dest(destination));
+function copyV1(cb) {
+  try {
+    // Ensure v1 destination directory exists
+    mkdirSync(`${destination}/v1`, { recursive: true });
+
+    // Copy all files recursively from v1 to docs/v1
+    cpSync(`${root}v1`, `${destination}/v1`, {
+      recursive: true,
+      force: true,
+      preserveTimestamps: true,
+    });
+
+    cb();
+  } catch (err) {
+    cb(err);
+  }
 }
 
 /**

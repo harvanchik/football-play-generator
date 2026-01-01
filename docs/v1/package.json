@@ -1,0 +1,32 @@
+{
+  "name": "football-play-generator",
+  "version": "1.0.0",
+  "description": "Flag Football Play Generator",
+  "author": "Jake Harvanchik",
+  "main": "index.js",
+  "scripts": {
+    "dev": "npx @tailwindcss/cli -i ./assets/styles/tailwind.css -o ./assets/styles/styles.css --watch",
+    "prod": "npx @tailwindcss/cli -i ./assets/styles/tailwind.css -o ./assets/styles/styles.css --minify",
+    "gulp": "pnpm run prod && gulp",
+    "clean": "gulp clean"
+  },
+  "keywords": [],
+  "license": "ISC",
+  "devDependencies": {
+    "@tailwindcss/cli": "^4.1.18",
+    "@tailwindcss/forms": "^0.5.11",
+    "cross-env": "^10.1.0",
+    "del": "^8.0.1",
+    "gulp": "^5.0.1",
+    "gulp-htmlmin": "^5.0.1",
+    "gulp-image": "^6.3.1",
+    "gulp-minify": "^3.1.0",
+    "gulp-rev": "^12.0.0",
+    "gulp-rev-rewrite": "^6.0.0",
+    "gulp-svgmin": "^4.1.0",
+    "prettier": "^3.7.4",
+    "prettier-plugin-tailwindcss": "^0.7.2",
+    "tailwindcss": "^4.1.18",
+    "typescript": "^5.9.3"
+  }
+}
