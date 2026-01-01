@@ -16,7 +16,7 @@ const manifest = `${root}rev-manifest.json`;
  */
 function html() {
   return gulp
-    .src([`${root}**/*.html`, `!${root}node_modules/**/*.html`, `!${destination}/**/*.html`])
+    .src([`${root}**/*.html`, `!${root}node_modules/**/*.html`, `!${destination}/**/*.html`, `!${root}v1/**/*.html`])
     .pipe(
       htmlmin({
         collapseWhitespace: true,
@@ -112,6 +112,13 @@ function favicon() {
 }
 
 /**
+ * Copy V1 Files
+ */
+function copyV1() {
+  return gulp.src([`${root}v1/index.html`, `${root}v1/assets/**/*`, `${root}v1/favicon.ico`], { base: root }).pipe(gulp.dest(destination));
+}
+
+/**
  * Generate robots.txt for SEO
  */
 function robotsTxt(cb) {
@@ -158,7 +165,7 @@ function clean() {
  * 5. Process HTML with asset hashing references
  * 6. Generate SEO files (robots.txt, sitemap.xml) in parallel
  */
-gulp.task('default', gulp.series(clean, styles, javascript, gulp.parallel(images, svg, favicon), html, gulp.parallel(robotsTxt, sitemap)));
+gulp.task('default', gulp.series(clean, styles, javascript, gulp.parallel(images, svg, favicon, copyV1), html, gulp.parallel(robotsTxt, sitemap)));
 
 /**
  * Task to remove the destination folder and its contents.

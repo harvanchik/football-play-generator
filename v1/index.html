@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -16,6 +16,11 @@
     <!-- START: Background -->
     <img src="./assets/img/field.webp" alt="football field" class="absolute scale-105 opacity-90 blur" />
     <!-- END: Background -->
+
+    <!-- Updated Version Link (Top Left) -->
+    <div class="absolute top-4 left-4 z-20 hidden md:block">
+      <a href="../index.html" class="text-sm font-bold text-white underline decoration-white/30 hover:text-white/80 transition-all"> Use Updated Version </a>
+    </div>
 
     <!-- START: Title -->
     <section
@@ -45,9 +50,7 @@
       <!-- END: Quarter, Time, Down -->
 
       <!-- START: Penalty Information -->
-      <div
-        :class="!penalty?.name && 'hidden'"
-        class="flex min-w-[57rem] flex-col space-y-1.5 rounded-md bg-black bg-opacity-30 p-3 px-6 text-4xl">
+      <div :class="!penalty?.name && 'hidden'" class="flex min-w-[57rem] flex-col space-y-1.5 rounded-md bg-black bg-opacity-30 p-3 px-6 text-4xl">
         <!-- START: Penalty Result, What, Who, When, Where -->
         <div :class="penaltyType !== 'live' && 'hidden'" class="mr-auto flex w-max flex-row items-center space-x-2.5">
           <p class="text-emerald-500" x-text="getResult(penalty, playType, down)"></p>
@@ -99,9 +102,9 @@
           <span class="cursor-pointer rounded-md bg-black/[85] p-0.5 px-1" @click="generate()">ENTER</span>
           <span>to Generate a New Play</span>
         </p>
-        
+
         <!-- Undo Button -->
-        <button 
+        <button
           @click="undo()"
           :class="!hasHistory && 'opacity-50 cursor-not-allowed'"
           :disabled="!hasHistory"
