@@ -25,7 +25,7 @@ function html() {
         minifyJS: true,
         removeEmptyAttributes: true,
         removeAttributeQuotes: true,
-      })
+      }),
     )
     .pipe(rewrite({ manifest: readFileSync(manifest) }))
     .pipe(gulp.dest(destination));
@@ -62,7 +62,7 @@ function javascript() {
           comments: false,
           quote_style: 1,
         },
-      })
+      }),
     )
     .pipe(rev())
     .pipe(gulp.dest(`${destination}/assets/js`))
@@ -77,14 +77,14 @@ function images(cb) {
   try {
     // Ensure destination directory exists
     mkdirSync(`${destination}/assets/img`, { recursive: true });
-    
+
     // Copy all files recursively, preserving binary data
-    cpSync(`${root}assets/img`, `${destination}/assets/img`, { 
+    cpSync(`${root}assets/img`, `${destination}/assets/img`, {
       recursive: true,
       force: true,
-      preserveTimestamps: true
+      preserveTimestamps: true,
     });
-    
+
     cb();
   } catch (err) {
     cb(err);
@@ -108,7 +108,7 @@ function svg() {
  * Copy favicon
  */
 function favicon() {
-  return gulp.src([`${root}favicon.ico`]).pipe(gulp.dest(destination));
+  return gulp.src([`${root}**/favicon.ico`, `!${root}node_modules/**`, `!${destination}/**`]).pipe(gulp.dest(destination));
 }
 
 /**
@@ -119,7 +119,7 @@ function robotsTxt(cb) {
 Allow: /
 
 Sitemap: https://harvanchik.github.io/football-play-generator/sitemap.xml`;
-  
+
   writeFileSync(`${destination}/robots.txt`, robotsContent);
   cb();
 }
@@ -137,7 +137,7 @@ function sitemap(cb) {
     <priority>1.0</priority>
   </url>
 </urlset>`;
-  
+
   writeFileSync(`${destination}/sitemap.xml`, sitemapContent);
   cb();
 }
@@ -158,17 +158,7 @@ function clean() {
  * 5. Process HTML with asset hashing references
  * 6. Generate SEO files (robots.txt, sitemap.xml) in parallel
  */
-gulp.task(
-  'default',
-  gulp.series(
-    clean,
-    styles,
-    javascript,
-    gulp.parallel(images, svg, favicon),
-    html,
-    gulp.parallel(robotsTxt, sitemap)
-  )
-);
+gulp.task('default', gulp.series(clean, styles, javascript, gulp.parallel(images, svg, favicon), html, gulp.parallel(robotsTxt, sitemap)));
 
 /**
  * Task to remove the destination folder and its contents.

@@ -1,0 +1,7 @@
+onlyBuiltDependencies:
+  - gifsicle
+  - jpeg-recompress-bin
+  - mozjpeg
+  - optipng-bin
+  - pngquant-bin
+  - zopflipng-bin
