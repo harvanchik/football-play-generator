@@ -37,8 +37,23 @@
     <meta name="theme-color" content="#000000" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 
+    <!-- PWA Meta Tags -->
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="Penalty Gen" />
+
+    <!-- iOS Splash Screens (optional but recommended) -->
+    <link rel="apple-touch-icon" href="./favicon.jpg" />
+    <link rel="apple-touch-icon" sizes="152x152" href="./favicon.jpg" />
+    <link rel="apple-touch-icon" sizes="180x180" href="./favicon.jpg" />
+    <link rel="apple-touch-icon" sizes="167x167" href="./favicon.jpg" />
+
     <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="./favicon.ico" />
+
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="./manifest.json" />
 
     <!-- Preconnect for Performance -->
     <link rel="preconnect" href="https://unpkg.com" crossorigin />
@@ -50,6 +65,36 @@
     <!-- Scripts -->
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <script src="./assets/js/football.js"></script>
+
+    <!-- PWA Service Worker Registration -->
+    <script>
+      // Register service worker
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker
+            .register('./service-worker.js')
+            .then(registration => {
+              console.log('ServiceWorker registered:', registration);
+            })
+            .catch(err => {
+              console.log('ServiceWorker registration failed:', err);
+            });
+        });
+      }
+
+      // Set CSS variable for dynamic viewport height (fixes mobile browser chrome issue)
+      function setVH() {
+        let vh = window.innerHeight * 0.01;
+        document.documentElement.style.setProperty('--vh', `${vh}px`);
+      }
+
+      // Set initially
+      setVH();
+
+      // Update on resize and orientation change
+      window.addEventListener('resize', setVH);
+      window.addEventListener('orientationchange', setVH);
+    </script>
 
     <!-- Structured Data for SEO -->
     <script type="application/ld+json">
@@ -77,7 +122,7 @@
     </script>
   </head>
 
-  <body x-data="gameManager" class="relative min-h-screen overflow-hidden bg-black font-sans">
+  <body x-data="gameManager" class="relative min-h-screen-safe overflow-hidden bg-black font-sans">
     <!-- START: Background -->
     <img src="./assets/img/field.webp" alt="football field" class="absolute inset-0 h-full w-full object-cover opacity-75 blur-sm" />
     <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-black/50"></div>
@@ -112,7 +157,7 @@
       </button>
     </div>
 
-    <div class="relative z-10 flex min-h-screen flex-col items-center justify-center p-1 md:p-4">
+    <div class="relative z-10 flex min-h-screen-safe flex-col items-center justify-center p-1 md:p-4 safe-padding-top safe-padding-bottom">
       <!-- START: Scoreboard -->
       <div class="mb-2 flex w-full max-w-4xl items-center justify-between rounded-xl border border-white/10 bg-black/60 p-2 shadow-lg backdrop-blur-md md:mb-8 md:p-4">
         <div class="flex w-1/3 flex-col items-center border-r border-white/10">
